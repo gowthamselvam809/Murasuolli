@@ -1,0 +1,12 @@
+[
+    {
+        "firstname": "Jude",
+        "lastname": "Bellingham",
+        "email": "bellingham@gmail.com",
+        "password": "ThisNeedToBeCorrected",
+        "type": 7,
+        "otp": 1234,
+        "otp_expirationtime":0,
+        "active": true
+    }
+]
