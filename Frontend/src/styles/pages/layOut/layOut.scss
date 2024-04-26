@@ -1,0 +1,57 @@
+@use '../../base' as *;
+
+.App {
+    width: 100vw;
+    height: 100vh;
+    padding: 0px;
+    margin: 0px;
+}
+
+.children {
+    &__container {
+        width: 75%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}
+
+.top-nav-bar {
+    &__container {
+        width: 100%;
+        height: 10%;
+        background: var(--white);
+        border: 1px solid var(--grey);
+        border-radius: 10px;
+    }
+}
+
+.main {
+    &__content {
+        height: 85%;
+        width: 100%;
+        border-radius: 10px;
+        border: 1px solid var(--grey);
+        overflow-y: scroll;
+        @include hide-scrollbar();
+    }
+}
+
+.lay-out {
+    &__container {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__content {
+        width: 100%;
+        height: 96%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+}

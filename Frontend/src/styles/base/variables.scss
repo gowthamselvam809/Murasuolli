@@ -1,0 +1,75 @@
+:root {
+    //hsl colors (use hsl(var(--white)))
+    --white: 0 0% 100%;
+    --black: 0 0% 0%;
+    --blue: 240, 100%, 50%;
+    --dark-blue: 240, 100%, 27%;
+    --orange: 39, 100%, 50%;
+    --liner-black: 0, 0%, 32%;
+
+    //nomal colors (use var(--normal-white))
+    --white: #FFF;
+    --normal-black: #000;
+    --light-grey: #C4C4C4;
+    --grey-b8b7b7: #b8b7b7;
+    --deep-blue: #4099ff;
+    --light-blue: #82bcff;
+    --grey: #ced4da;
+    --blue-eaf4ff: #eaf4ff;
+    --nav-grey: #f9f9f9b3;
+    --black-2a2a2a: #2a2a2a;
+    --nav-color: #cd1f4f;
+    --red:#ff0000;
+
+    //rgba colors (use rgba(var(--rgba-white)))
+    --rgba-white: 0, 0, 0, 0;
+    --rgba-black: 0, 0, 0, 1;
+
+    //font sizes
+    --fs-h1: 2.875rem; // 46px
+    --fs-h2: 2.25rem; // 36px
+    --fs-h3: 1.5rem; // 24px
+    --fs-h4: 1.4375rem; // 23px
+    --fs-body-large: 1.25rem; // 20px
+    --fs-h5: 1.125rem; // 18px
+    --fs-body: 1rem; // 16px
+    --fs-body-small: 0.875rem; // 14px
+    --fs-input: 0.9375rem; // 15px
+    --fs-small: 0.75rem; // 12px
+    --fs-xsmall: 0.625rem; // 10px
+
+    //line height
+    --lh-body: 150%;
+    --lh-h1: 3.4375rem; // 55px
+    --lh-h2: 3.375rem; // 54px
+    --lh-h3: 1.4375rem; // 23px
+    --lh-body-small: 1.062rem; // 17px
+    --lh-normal: normal; // 17px
+
+    //font weight
+    --fw-bold: 700;
+    --fw-semibold: 600;
+    --fw-medium: 500;
+    --fw-regular: 400;
+    --fw-light: 300;
+}
+
+
+//using the map-get($breakpoints,tablet) if tablet there then it will take value like 768px else it will take null
+$breakpoints: (
+    desktop_xxxlarge: 1920px,
+    desktop_xxlarge: 1680px,
+    desktop_xlarge: 1440px,
+    desktop-xmidlarge: 1500px,
+    desktop_midlarge: 1280px,
+    desktop_large: 1200px,
+    desktop_medium: 1024px,
+    desktop: 992px,
+    tablet_large: 840px,
+    tablet: 768px,
+    tablet_small: 600px,
+    mobile_large: 500px,
+    mobile_medium: 400px,
+    mobile_small: 375px,
+    mobile:800px
+);

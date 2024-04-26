@@ -1,0 +1,46 @@
+@use 'variables' as *;
+
+@mixin custom-scrollbar {
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: var(--light-grey);
+        border-radius: 4px;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: var(--grey-b8b7b7);
+    }
+}
+
+@mixin background-image($image, $width, $height) {
+    background-image: url($image);
+    width: $width;
+    height: $height;
+    background-size: cover;
+    background-position: center;
+}
+
+@mixin hide-scrollbar {
+    &::-webkit-scrollbar {
+        width: 0px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #f0f5f7;
+        border-radius: 10px;
+    }
+}

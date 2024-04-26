@@ -1,0 +1,62 @@
+.dashboard_container {
+
+    &_header {
+        height: 100px;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &_text {
+            color: white;
+            font-weight: bold;
+        }
+    }
+
+    &_body {
+        padding: 20px;
+        height: 67vh;
+
+        &_left::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        &_left::-webkit-scrollbar-track {
+            background: transparent;
+
+        }
+
+        &_left::-webkit-scrollbar-thumb {
+            background-color: grey;
+            border-radius: 10px;
+            color: black;
+        }
+
+        &_left {
+            border-right: 1px solid grey;
+            height: 100%;
+            overflow-y: auto;
+
+            &_label {
+                margin-bottom: 0px;
+
+                &_link {
+                    font-weight: 600;
+                    font-size: 19px;
+                    text-decoration: none;
+                }
+
+            }
+        }
+
+        &_right {
+            height: 100%;
+            overflow-y: auto;
+        }
+    }
+}
+
+.login_form_group {
+    height: 35px;
+    border-radius: 8px;
+}

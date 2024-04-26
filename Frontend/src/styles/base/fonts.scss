@@ -1,0 +1,31 @@
+@use 'variables' as *;
+
+@mixin font-h1 {
+    color: hsl(var(--black));
+    font-family: 'Montserrat';
+    font-size: var(--fs-body-large);
+    font-style: normal;
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-body);
+}
+
+//mixin with if else conditions
+
+@mixin textStyle($textStyle) {
+    font-family: 'Montserrat';
+    font-style: normal;
+
+    @if $textStyle ==h1 {
+        color: hsl(var(--black));
+        font-size: var(--fs-h1);
+        font-weight: var(--fw-bold);
+        line-height: var(--lh-h1);
+    }
+
+    @else if $textStyle ==h2 {
+        color: hsl(var(--black));
+        font-size: var(--fs-h2);
+        font-weight: var(--fw-bold);
+        line-height: var(--lh-h2);
+    }
+}

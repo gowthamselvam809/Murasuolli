@@ -1,0 +1,6 @@
+@use 'variables' as *;
+
+
+@mixin fontFamily($family) {
+    font-family: map-get($fontFamilys, $family);
+}

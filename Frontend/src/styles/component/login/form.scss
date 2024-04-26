@@ -1,0 +1,94 @@
+@use '../../base' as *;
+
+.formik {
+
+    &-group {
+        display: flex;
+        flex-direction: column;
+
+        .form-field {
+            height: 50px;
+            border-radius: 6px;
+            border: 1px solid var(--grey);
+            padding: 10px;
+            background: var(--white);
+
+            &:active {
+                border: 1px solid var(--grey);
+            }
+        }
+
+        .error-field {
+            color: hsl(var(--red));
+        }
+
+        .formik-label {
+            color: var(--white);
+
+            &.black {
+                color: var(--black-2a2a2a);
+            }
+        }
+    }
+
+    &-conatiner {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        @include hide-scrollbar();
+
+        .register {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            label {
+                color: var(--white);
+            }
+
+            .link {
+                cursor: pointer;
+            }
+        }
+        .forgotPassword-link {
+            display: flex;
+            justify-content: center;
+            padding: 10px 0px;
+            label {
+                color: var(--deep-blue);
+            }
+
+            .link {
+                cursor: pointer;
+            }
+        }
+
+        &.login {
+            justify-content: center;
+        }
+    }
+
+    &-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .submit-btn {
+            height: 50px;
+            border-radius: 6px;
+            color: var(--black-2a2a2a);
+            background-color: var(--white);
+            border: 1px solid var(--deep-blue);
+
+            &.regiter {
+                margin-bottom: 10px;
+            }
+
+            &.update-profile {
+                border: 1px solid var(--grey);
+            }
+        }
+    }
+
+
+}

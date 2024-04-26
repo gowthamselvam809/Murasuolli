@@ -1,0 +1,84 @@
+@use '../../base' as *;
+
+.side-nav__container {
+  width: 20%;
+  height: 100%;
+  background: var(--black-2a2a2a);
+  border-radius: 10px;
+}
+
+.side-nav__paths {
+  margin: 20px;
+}
+
+.side-nav__paths .router-link {
+  display: flex;
+  gap: 5px;
+}
+
+.router-link {
+  color: var(--white);
+  font-size: 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.router-link label {
+  cursor: pointer;
+}
+
+.nav__dropdown {
+  background-color: transparent;
+  width: -webkit-fill-available;
+  border: none;
+}
+
+.nav__dropdown .accordion-item {
+  color: var(--white);
+  background-color: transparent;
+  border: none;
+}
+
+.nav__dropdown .accordion-item .accordion-header {
+  background: transparent;
+  border: none;
+}
+
+.nav__dropdown .accordion-item .accordion-header .accordion-button {
+  background: transparent;
+  color: var(--white);
+  padding: 0;
+  border: none;
+}
+
+.nav__dropdown .accordion-item .accordion-header .accordion-button:focus {
+  border: none;
+}
+
+.nav__dropdown .accordion-item .accordion-header .accordion-button:not(.collapsed) {
+  box-shadow: none;
+}
+
+.nav__dropdown .accordion-item .accordion-body {
+  padding: 5px 10px;
+}
+
+.nav__label {
+  color: var(--white);
+  cursor: pointer;
+  gap: 5px;
+}
+
+.nav__logo {
+  width: -webkit-fill-available;
+  margin: 10px;
+  padding: 5px;
+  background-color: var(--white);
+  border-radius: 5px;
+}
+
+.nav__icon {
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+}

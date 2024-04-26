@@ -1,0 +1,14 @@
+@use 'variables' as *;
+
+@mixin primary-button {
+    background-color: hsl(var(--blue));
+    color: hsl(var(--white));
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+
+    &:hover {
+        background-color: hsl(var(--darker-blue));
+    }
+}

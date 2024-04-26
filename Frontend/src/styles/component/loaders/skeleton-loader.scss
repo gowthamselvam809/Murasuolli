@@ -1,0 +1,9 @@
+@use '../../base' as *;
+
+.skeleton-loader {
+    width: 210px;
+    background: var(--white);
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid var(--grey);
+}

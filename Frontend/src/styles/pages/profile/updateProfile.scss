@@ -1,0 +1,22 @@
+@use '../../base'as *;
+
+.update-profile {
+  &__conatiner {
+    height: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.form-field {
+  &__disabled {
+    background-color: #8a8c8a;
+    height: 50px;
+    border-radius: 6px;
+    border: 1px solid var(--grey);
+    padding: 10px;
+    color: var(--white);
+    font-style: italic;
+  }
+}

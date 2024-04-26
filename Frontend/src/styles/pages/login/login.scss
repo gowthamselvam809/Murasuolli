@@ -1,0 +1,29 @@
+@use '../../base' as *;
+
+.label {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0px 0px 25px 0px;
+    color: var(--white);
+    font-size: 30px;
+}
+
+.social-login-contaniner {
+    display: flex;
+    justify-content: space-between; 
+    flex-wrap: wrap;
+}
+
+.social-login-label {
+    display: flex;
+    justify-content: flex-start;
+    padding: 20px 0px 10px 0px;
+    color: var(--white);
+    font-size: 30px;
+}
+
+.forgot-password {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
