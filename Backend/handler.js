@@ -7,17 +7,15 @@ const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
 dotenv.config();
 const cors = require('cors');
-require('./awsConfig');
 
 const swaggerUI = require('swagger-ui-express')
 const yaml = require('js-yaml')
 const swaggerJSDocs = yaml.load('./api.yaml')
 
-const { authController, commonController, headAccController, stateController } = require('./src/controller')
+const { headAccController, stateController } = require('./src/controller')
 const { auth, validator } = require('./src/middleware');
 const { constant: { Environment, Roles } } = require("./src/constants");
 const { util: { ERROR } } = require('./src/helper');
-const { connectToDatabase } = require("./msSqlConfig");
 
 var NODE_ENV = process.env.NODE_ENV || 'development';
 
