@@ -7,8 +7,7 @@ import Reason from "../../components/master/reason";
 import CopyConfirm from "../../components/master/copyConfirm";
 import Commission from "../../components/master/commission";
 import Operator from "../../components/master/operator";
-// import DistrictsComponent from "../../components/master/DistrictsComponent";
-// import StatesComponent from "../../components/master/StatesComponent";
+import District from "../../components/master/district";
 
 const DashBoard = () => {
   const [activeTab, setActiveTab] = useState("agent");
@@ -22,8 +21,7 @@ const DashBoard = () => {
       case "copyConfirm": return <CopyConfirm />;
       case "commission": return <Commission />;
       case "operator": return <Operator />;
-      // case "districts":
-      //   return <DistrictsComponent />;
+      case "districts": return <District />;
       // case "states":
       //   return <StatesComponent />;
       default: return null;

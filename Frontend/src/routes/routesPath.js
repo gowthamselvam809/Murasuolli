@@ -3,6 +3,14 @@ import React from "react";
 
 import { Login, Home, PageNotFound, DashBoard, Register, Profile, PasswordReset, UsersList } from "./pages";
 import { pageRoutes } from "../helper";
+import AgentCreation from "../components/master/agentCreation";
+import Magazine from "../components/master/magazine";
+import Bank from "../components/master/bank";
+import Reason from "../components/master/reason";
+import CopyConfirm from "../components/master/copyConfirm";
+import Commission from "../components/master/commission";
+import Operator from "../components/master/operator";
+import District from "../components/master/district";
 
 export const routerData = [
   {
@@ -24,10 +32,58 @@ export const routerData = [
     element: <Register />
   },
   {
-    path: pageRoutes.dashboard,
+    path: '/master',
     exact: false,
     layOut: true,
     element: <DashBoard />
+  },
+  {
+    path: '/agent',
+    exact: false,
+    layOut: true,
+    element: <AgentCreation />
+  },
+  {
+    path: '/magazine',
+    exact: false,
+    layOut: true,
+    element: <Magazine />
+  },
+  {
+    path: '/bank',
+    exact: false,
+    layOut: true,
+    element: <Bank />
+  },
+  {
+    path: '/reason',
+    exact: false,
+    layOut: true,
+    element: <Reason />
+  },
+  {
+    path: '/copyConfirm',
+    exact: false,
+    layOut: true,
+    element: <CopyConfirm />
+  },
+  {
+    path: '/commission',
+    exact: false,
+    layOut: true,
+    element: <Commission />
+  },
+  {
+    path: '/operator',
+    exact: false,
+    layOut: true,
+    element: <Operator />
+  },
+  {
+    path: '/districts',
+    exact: false,
+    layOut: true,
+    element: <District />
   },
   {
     path: pageRoutes.home,

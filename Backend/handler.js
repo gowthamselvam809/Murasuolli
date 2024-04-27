@@ -39,9 +39,9 @@ app.use(cors());
 
 app.get('/', (req, res) => { res.send('Welcome to Murasuolli!!!'); });
 
-app.post("/fetchUser", headAccController.fetchUser);
+app.post("/fetchAgent", headAccController.fetchUser);
 
-app.post("/fetchAllUser", headAccController.fetchAllUser);
+app.post("/fetchAllAgent", headAccController.fetchAllUser);
 
 app.post("/fetchAllState", stateController.fetchAllState);
 
@@ -61,16 +61,10 @@ if (NODE_ENV === Environment.Development || NODE_ENV === Environment.Testing) {
     app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerJSDocs, swaggerOptions));
 }
 
-if (NODE_ENV === Environment.Development) {
-    app.set("port", process.env.PORT || 3001);
+app.set("port", process.env.PORT || 3001);
 
-    let server = http.createServer(app);
+let server = http.createServer(app);
 
-    server.listen(app.get("port"), "0.0.0.0", () => {
-        console.log(`Express server listening on http://localhost:${app.get("port")}`);
-    });
-} else {
-    const serverless = require("serverless-http");
-
-    module.exports.rhibhus_server = serverless(app);
-}
+server.listen(app.get("port"), "0.0.0.0", () => {
+    console.log(`Express server listening on http://localhost:${app.get("port")}`);
+});

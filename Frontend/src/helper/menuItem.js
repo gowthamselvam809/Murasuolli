@@ -10,11 +10,53 @@ import ProfileIcon from "../assets/ProfileIcon.png";
 
 const menuItem = [
   {
-    type: menuItemTypes.link,
+    type: menuItemTypes.list,
     title: "Master",
     image: dashboardIcon,
-    path: pageRoutes.master,
-    role: []
+    path: '',
+    role: [],
+    items: [
+      {
+        title: "agent",
+        image: ProfileIcon,
+        path: "/agent",
+      },
+      {
+        title: "magazine",
+        image: ProfileIcon,
+        path: "/magazine",
+      },
+      {
+        title: "bank",
+        image: ProfileIcon,
+        path: '/bank',
+      },
+      {
+        title: "reason",
+        image: ProfileIcon,
+        path: '/reason',
+      },
+      {
+        title: "Copy Confirm",
+        image: ProfileIcon,
+        path: '/copyConfirm',
+      },
+      {
+        title: "commission",
+        image: ProfileIcon,
+        path: '/commission',
+      },
+      {
+        title: "operator",
+        image: ProfileIcon,
+        path: '/operator',
+      },
+      {
+        title: "districts",
+        image: ProfileIcon,
+        path: '/districts',
+      },
+    ]
   },
   {
     type: menuItemTypes.link,
