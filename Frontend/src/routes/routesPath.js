@@ -11,6 +11,7 @@ import CopyConfirm from "../components/master/copyConfirm";
 import Commission from "../components/master/commission";
 import Operator from "../components/master/operator";
 import District from "../components/master/district";
+import States from "../components/master/states";
 
 export const routerData = [
   {
@@ -84,6 +85,12 @@ export const routerData = [
     exact: false,
     layOut: true,
     element: <District />
+  },
+  {
+    path: '/states',
+    exact: false,
+    layOut: true,
+    element: <States />
   },
   {
     path: pageRoutes.home,

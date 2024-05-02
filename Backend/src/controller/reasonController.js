@@ -1,32 +1,32 @@
-const { stateService } = require("../services");
+const { reasonService } = require("../services");
 
 const { util: { formatResponse } } = require('../helper');
 
 
-const fetchAllState = async (req, res, next) => {
+const fetchAllReason = async (req, res, next) => {
     try {
         let request = req.body;
-        let result = await stateService.fetchAllState(request);
+        let result = await reasonService.fetchAllReason(request);
         res.send(formatResponse(result));
     } catch (error) {
         next(error);
     }
 };
 
-const createState = async (req, res, next) => {
+const updateReason = async (req, res, next) => {
     try {
         let request = req.body;
-        let result = await stateService.createState(request);
+        let result = await reasonService.updateReason(request);
         res.send(formatResponse(result));
     } catch (error) {
         next(error);
     }
 };
 
-const updateState = async (req, res, next) => {
+const createReason = async (req, res, next) => {
     try {
         let request = req.body;
-        let result = await stateService.updateState(request);
+        let result = await reasonService.createReason(request);
         res.send(formatResponse(result));
     } catch (error) {
         next(error);
@@ -34,7 +34,7 @@ const updateState = async (req, res, next) => {
 };
 
 module.exports = {
-    fetchAllState,
-    createState,
-    updateState
+    fetchAllReason,
+    updateReason,
+    createReason
 }

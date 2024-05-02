@@ -8,7 +8,8 @@ const sequelize = new Sequelize('murmaster', 'sa', 'sa123', {
             encrypt: true,
             trustServerCertificate: true
         }
-    }
+    },
+    logging: console.log
 });
 
 module.exports = sequelize;

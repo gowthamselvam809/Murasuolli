@@ -1,32 +1,32 @@
-const { stateService } = require("../services");
+const { magazineService } = require("../services");
 
 const { util: { formatResponse } } = require('../helper');
 
 
-const fetchAllState = async (req, res, next) => {
+const fetchAllMagazine = async (req, res, next) => {
     try {
         let request = req.body;
-        let result = await stateService.fetchAllState(request);
+        let result = await magazineService.fetchAllMagazine(request);
         res.send(formatResponse(result));
     } catch (error) {
         next(error);
     }
 };
 
-const createState = async (req, res, next) => {
+const updateMagazine = async (req, res, next) => {
     try {
         let request = req.body;
-        let result = await stateService.createState(request);
+        let result = await magazineService.updateMagazine(request);
         res.send(formatResponse(result));
     } catch (error) {
         next(error);
     }
 };
 
-const updateState = async (req, res, next) => {
+const createMagazine = async (req, res, next) => {
     try {
         let request = req.body;
-        let result = await stateService.updateState(request);
+        let result = await magazineService.createMagazine(request);
         res.send(formatResponse(result));
     } catch (error) {
         next(error);
@@ -34,7 +34,7 @@ const updateState = async (req, res, next) => {
 };
 
 module.exports = {
-    fetchAllState,
-    createState,
-    updateState
+    fetchAllMagazine,
+    updateMagazine,
+    createMagazine
 }

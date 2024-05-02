@@ -25,7 +25,7 @@ const SideNav = () => {
         {menuItem?.map((item, index) => (
           <label
             className={classNames("router-link", {
-              "active-link": location.pathname === item.path // Add 'active-link' class if the path matches the current location
+              "active-link": location.pathname === item.path
             })}
             key={index}
           >
@@ -36,18 +36,18 @@ const SideNav = () => {
                     <Accordion.Item eventKey={index}>
                       <Accordion.Header className="nav__item">
                         <img className="nav__icon" src={item.image} alt="" />
-                        <label className="nav__item">{item.title}</label>
+                        <label className="nav__item" style={{ fontSize: 18 }}>{item.title}</label>
                       </Accordion.Header>
-                      <Accordion.Body>
+                      <Accordion.Body >
                         {item.items.map((listItem, i) => (
                           <div
                             key={i}
                             onClick={() => navigate(listItem.path)}
                             className={classNames("nav__item", {
-                              "active-link": location.pathname === listItem.path // Add 'active-link' class if the path matches the current location
+                              "active-link": location.pathname === listItem.path
                             })}
                           >
-                            <label className="nav__item">{listItem.title}</label>
+                            <label className="nav__item" style={{ marginLeft: 18, fontSize: 15 }}>{listItem.title}</label>
                           </div>
                         ))}
                       </Accordion.Body>
@@ -56,7 +56,7 @@ const SideNav = () => {
                 ) : (
                   <div
                     className={classNames("nav__item", {
-                      "active-link": location.pathname === item.path // Add 'active-link' class if the path matches the current location
+                      "active-link": location.pathname === item.path
                     })}
                     onClick={() => navigate(item.path)}
                     key={index}

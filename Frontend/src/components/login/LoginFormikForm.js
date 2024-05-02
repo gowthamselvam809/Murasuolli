@@ -5,6 +5,7 @@ import { SessionStorageKeys, SignupFormSchema, labels } from "../../helper";
 import { pageRoutes } from "../../helper";
 import { userLogin } from "../../api/apiRegister";
 import { SessionStorage } from "../../utils";
+import Select from "react-dropdown-select";
 // import { SocialLoginPage } from "./SocialLoginPage";
 
 const LoginFormikForm = () => {
@@ -39,8 +40,19 @@ const LoginFormikForm = () => {
         {({ isSubmitting, errors, handleSubmit }) => (
           <form className="formik-form" onSubmit={handleSubmit}>
             <div className="formik-group">
-              <label className="formik-label">{labels.EMAIL}</label>
-              <Field name="email" type="email" className={`form-field ${errors.email ? "error" : ""}`} placeholder={labels.EMAIL} />
+              <label className="formik-label">User Name</label>
+              {/* <Field name="email" type="email" className={`form-field ${errors.email ? "error" : ""}`} placeholder={labels.EMAIL} /> */}
+              <Select
+                name="email"
+                className='form-field'
+                options={[
+                  { value: 1, label: "user 1" },
+                  { value: 2, label: "user 2" }
+                ]}
+                // values={state}
+                // onChange={(value) => setState(value)}
+                placeholder="Select a State"
+              />
               <ErrorMessage className="error-field" name="email" component="label" />
             </div>
             <div className="formik-group">
@@ -54,7 +66,7 @@ const LoginFormikForm = () => {
               </div>
 
             </div>
-            <button className="submit-btn" type="submit" disabled={isSubmitting}>
+            <button className="submit-btn" onClick={() => { navigate('/states') }} type="button" disabled={isSubmitting}>
               {labels.SUBMIT}
             </button>
             {/* <SocialLoginPage /> */}

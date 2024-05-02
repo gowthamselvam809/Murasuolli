@@ -17,22 +17,32 @@ const menuItem = [
     role: [],
     items: [
       {
-        title: "agent",
+        title: "States",
+        image: ProfileIcon,
+        path: '/states',
+      },
+      {
+        title: "Districts",
+        image: ProfileIcon,
+        path: '/districts',
+      },
+      {
+        title: "Agent",
         image: ProfileIcon,
         path: "/agent",
       },
       {
-        title: "magazine",
+        title: "Magazine",
         image: ProfileIcon,
         path: "/magazine",
       },
       {
-        title: "bank",
+        title: "Bank",
         image: ProfileIcon,
         path: '/bank',
       },
       {
-        title: "reason",
+        title: "Reason",
         image: ProfileIcon,
         path: '/reason',
       },
@@ -42,20 +52,15 @@ const menuItem = [
         path: '/copyConfirm',
       },
       {
-        title: "commission",
+        title: "Commission",
         image: ProfileIcon,
         path: '/commission',
       },
-      {
-        title: "operator",
-        image: ProfileIcon,
-        path: '/operator',
-      },
-      {
-        title: "districts",
-        image: ProfileIcon,
-        path: '/districts',
-      },
+      // {
+      //   title: "Operator",
+      //   image: ProfileIcon,
+      //   path: '/operator',
+      // }
     ]
   },
   {

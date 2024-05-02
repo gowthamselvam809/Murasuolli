@@ -1,32 +1,32 @@
-const { stateService } = require("../services");
+const { districtService } = require("../services");
 
 const { util: { formatResponse } } = require('../helper');
 
 
-const fetchAllState = async (req, res, next) => {
+const fetchAllDistrict = async (req, res, next) => {
     try {
         let request = req.body;
-        let result = await stateService.fetchAllState(request);
+        let result = await districtService.fetchAllDistrict(request);
         res.send(formatResponse(result));
     } catch (error) {
         next(error);
     }
 };
 
-const createState = async (req, res, next) => {
+const createDistrict = async (req, res, next) => {
     try {
         let request = req.body;
-        let result = await stateService.createState(request);
+        let result = await districtService.createDistrict(request);
         res.send(formatResponse(result));
     } catch (error) {
         next(error);
     }
 };
 
-const updateState = async (req, res, next) => {
+const updateDistrict = async (req, res, next) => {
     try {
         let request = req.body;
-        let result = await stateService.updateState(request);
+        let result = await districtService.updateDistrict(request);
         res.send(formatResponse(result));
     } catch (error) {
         next(error);
@@ -34,7 +34,7 @@ const updateState = async (req, res, next) => {
 };
 
 module.exports = {
-    fetchAllState,
-    createState,
-    updateState
+    fetchAllDistrict,
+    updateDistrict,
+    createDistrict
 }

@@ -12,7 +12,7 @@ const swaggerUI = require('swagger-ui-express')
 const yaml = require('js-yaml')
 const swaggerJSDocs = yaml.load('./api.yaml')
 
-const { headAccController, stateController } = require('./src/controller')
+const { headAccController, stateController, districtController, magazineController, reasonController, copyConfirmController, commissionController } = require('./src/controller')
 const { auth, validator } = require('./src/middleware');
 const { constant: { Environment, Roles } } = require("./src/constants");
 const { util: { ERROR } } = require('./src/helper');
@@ -44,6 +44,48 @@ app.post("/fetchAgent", headAccController.fetchUser);
 app.post("/fetchAllAgent", headAccController.fetchAllUser);
 
 app.post("/fetchAllState", stateController.fetchAllState);
+
+app.post("/createState", stateController.createState);
+
+app.post("/updateState", stateController.updateState);
+
+app.post("/fetchAllDistrict", districtController.fetchAllDistrict);
+
+app.post("/updateDistrict", districtController.updateDistrict);
+
+app.post("/createDistrict", districtController.createDistrict);
+
+app.post("/addAgent", headAccController.addAgent);
+
+app.post("/updateAgent", headAccController.updateAgent);
+
+app.post("/deleteAgent", headAccController.deleteAgent);
+
+app.post("/fetchAllMagazine", magazineController.fetchAllMagazine);
+
+app.post("/updateMagazine", magazineController.updateMagazine);
+
+app.post("/createMagazine", magazineController.createMagazine);
+
+app.post("/fetchAllBankType", headAccController.fetchAllBankType);
+
+app.post("/fetchAllReason", reasonController.fetchAllReason);
+
+app.post("/updateReason", reasonController.updateReason);
+
+app.post("/createReason", reasonController.createReason);
+
+app.post("/fetchAllCopyConfirm", copyConfirmController.fetchAllCopyConfirm);
+
+app.post("/updateCopyConfirm", copyConfirmController.updateCopyConfirm);
+
+app.post("/createCopyConfirm", copyConfirmController.createCopyConfirm);
+
+app.post("/fetchAllCommission", commissionController.fetchAllCommission);
+
+app.post("/createCommission", commissionController.createCommission);
+
+app.post("/updateCommission", commissionController.updateCommission);
 
 function haltOnTimedout(req, res, next) {
     if (!req.timedout) next()

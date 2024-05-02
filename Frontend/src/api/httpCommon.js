@@ -15,7 +15,7 @@ axiosInstance.defaults.headers = {
 }
 
 axiosRetry(axiosInstance, {
-  retries: 2,
+  retries: 0,
   retryDelay: (...arg) => axiosRetry.exponentialDelay(...arg, 1000),
   retryCondition: axiosRetry.isRetryableError,
   onRetry: (retryCount, error) => console.log(`retry count : ${retryCount}, error:${error}`)
