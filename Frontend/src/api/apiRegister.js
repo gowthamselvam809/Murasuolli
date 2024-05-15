@@ -35,6 +35,14 @@ export const createState = async (data) => (await apiClient.postAPICall(apiRoute
 export const updateState = async (data) => (await apiClient.postAPICall(apiRoutes.updateState, data))?.data;
 export const updateDistrict = async (data) => (await apiClient.postAPICall(apiRoutes.updateDistrict, data))?.data;
 export const createDistrict = async (data) => (await apiClient.postAPICall(apiRoutes.createDistrict, data))?.data;
+export const fetchIssuesBasedOnDate = async (data) => (await apiClient.postAPICall(apiRoutes.fetchIssuesBasedOnDate, data))?.data;
+export const insertIssues = async (data) => (await apiClient.postAPICall(apiRoutes.insertIssues, data))?.data;
+export const fetchMaxIssDate = async (data) => (await apiClient.postAPICall(apiRoutes.fetchMaxIssDate, data))?.data;
+export const fetchEditIssuesByDate = async (data) => (await apiClient.postAPICall(apiRoutes.fetchEditIssuesByDate, data))?.data;
+export const updateIssueCopy = async (data) => (await apiClient.postAPICall(apiRoutes.updateIssueCopy, data))?.data;
+export const fetchAllCompanies = async (data) => (await apiClient.postAPICall(apiRoutes.fetchAllCompanies, data))?.data;
+export const fetchAllFinancialYear = async (data) => (await apiClient.postAPICall(apiRoutes.fetchAllFinancialYear, data))?.data;
+export const fetchAllOperator = async (data) => (await apiClient.postAPICall(apiRoutes.fetchAllOperator, data))?.data;
 
 export const getAllUsers = async (data) => (await apiClient.postAPICall(apiRoutes.getAllUsers, data))?.data;
 export const deleteUser = async (data) => (await apiClient.postAPICall(apiRoutes.deleteUser, data))?.data;

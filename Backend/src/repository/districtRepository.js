@@ -18,6 +18,15 @@ const fetchDistrictById = async (id) => (await districtModal.findAll({
 }))
 
 
+const fetchDistrictByStateId = async (id) => (await districtModal.findAll({
+  where: { stCode: id },
+  attributes: {
+    exclude: ['id']
+  },
+  order: [['stCode', 'ASC']]
+}))
+
+
 const updateDistrict = async (requestData) => (await sequelize.query(`
             UPDATE districtmaster
             SET areaName = :areaName,
@@ -58,5 +67,6 @@ module.exports = {
   fetchAllDistrict,
   fetchDistrictById,
   createDistrict,
-  updateDistrict
+  updateDistrict,
+  fetchDistrictByStateId
 }

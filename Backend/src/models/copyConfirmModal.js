@@ -9,6 +9,7 @@ const copyConfirmModal = sequelize.define('copyconfirm', {
     commId: { type: DataTypes.INTEGER },
     copies: { type: DataTypes.INTEGER },
     updated: { type: DataTypes.DATE },
+    closed: { type: DataTypes.STRING }
 }, {
     tableName: 'copyconfirm',
     timestamps: false

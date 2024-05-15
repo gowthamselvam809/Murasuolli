@@ -3,7 +3,7 @@ const sequelize = require('../../sequelize');
 
 
 const stateModal = sequelize.define('statemaster', {
-    stateCode: { type: DataTypes.STRING },
+    stateCode: { type: DataTypes.STRING, },
     stateName: { type: DataTypes.STRING },
     country: { type: DataTypes.STRING },
     operCode: { type: DataTypes.STRING },

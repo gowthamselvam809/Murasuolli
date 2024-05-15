@@ -47,6 +47,14 @@ const apiRoutes = {
   createState: "/createState",
   createDistrict: "/createDistrict",
   updateDistrict: "/updateDistrict",
+  fetchIssuesBasedOnDate: "/fetchIssuesBasedOnDate",
+  insertIssues: "/insertIssues",
+  fetchMaxIssDate: "/fetchMaxIssDate",
+  fetchEditIssuesByDate: "/fetchEditIssuesByDate",
+  updateIssueCopy: "/updateIssueCopy",
+  fetchAllCompanies: "/fetchAllCompanies",
+  fetchAllFinancialYear: "/fetchAllFinancialYear",
+  fetchAllOperator: "/fetchAllOperator",
 }
 
 export { Url, apiRoutes };

@@ -12,7 +12,7 @@ const swaggerUI = require('swagger-ui-express')
 const yaml = require('js-yaml')
 const swaggerJSDocs = yaml.load('./api.yaml')
 
-const { headAccController, stateController, districtController, magazineController, reasonController, copyConfirmController, commissionController } = require('./src/controller')
+const { headAccController, stateController, districtController, magazineController, reasonController, copyConfirmController, commissionController, issuesController, companyController, financialYearController, operatorController } = require('./src/controller')
 const { auth, validator } = require('./src/middleware');
 const { constant: { Environment, Roles } } = require("./src/constants");
 const { util: { ERROR } } = require('./src/helper');
@@ -38,54 +38,42 @@ app.use(fileUpload());
 app.use(cors());
 
 app.get('/', (req, res) => { res.send('Welcome to Murasuolli!!!'); });
-
 app.post("/fetchAgent", headAccController.fetchUser);
-
 app.post("/fetchAllAgent", headAccController.fetchAllUser);
-
 app.post("/fetchAllState", stateController.fetchAllState);
-
 app.post("/createState", stateController.createState);
-
 app.post("/updateState", stateController.updateState);
-
 app.post("/fetchAllDistrict", districtController.fetchAllDistrict);
-
 app.post("/updateDistrict", districtController.updateDistrict);
-
 app.post("/createDistrict", districtController.createDistrict);
-
 app.post("/addAgent", headAccController.addAgent);
-
 app.post("/updateAgent", headAccController.updateAgent);
-
 app.post("/deleteAgent", headAccController.deleteAgent);
-
 app.post("/fetchAllMagazine", magazineController.fetchAllMagazine);
-
 app.post("/updateMagazine", magazineController.updateMagazine);
-
 app.post("/createMagazine", magazineController.createMagazine);
-
 app.post("/fetchAllBankType", headAccController.fetchAllBankType);
-
 app.post("/fetchAllReason", reasonController.fetchAllReason);
-
 app.post("/updateReason", reasonController.updateReason);
-
 app.post("/createReason", reasonController.createReason);
-
 app.post("/fetchAllCopyConfirm", copyConfirmController.fetchAllCopyConfirm);
-
 app.post("/updateCopyConfirm", copyConfirmController.updateCopyConfirm);
-
 app.post("/createCopyConfirm", copyConfirmController.createCopyConfirm);
-
 app.post("/fetchAllCommission", commissionController.fetchAllCommission);
-
 app.post("/createCommission", commissionController.createCommission);
-
 app.post("/updateCommission", commissionController.updateCommission);
+app.post("/updateCommission", commissionController.updateCommission);
+app.post("/updateCommission", commissionController.updateCommission);
+app.post("/fetchAllIssuesBasedOnDates", issuesController.fetchAllIssuesBasedOnDates);
+app.post("/fetchIssuesBasedOnDate", issuesController.fetchIssuesBasedOnDate);
+app.post("/insertIssues", issuesController.insertIssues);
+app.post("/fetchMaxIssDate", issuesController.fetchMaxIssDate);
+app.post("/fetchEditIssuesByDate", issuesController.fetchEditIssuesByDate);
+app.post("/updateIssueCopy", issuesController.updateIssueCopy);
+app.post("/fetchAllCompanies", companyController.fetchAllCompanies);
+app.post("/fetchAllFinancialYear", financialYearController.fetchAllFinancialYear);
+app.post("/fetchAllOperator", operatorController.fetchAllOperator);
+app.post("/userLogin", operatorController.userLogin);
 
 function haltOnTimedout(req, res, next) {
     if (!req.timedout) next()

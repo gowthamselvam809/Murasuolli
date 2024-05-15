@@ -36,7 +36,7 @@ const fetchAllBankType = async () => (await headAccModal.findAll({
   }
 }))
 
-const addAgent = async (requestData) => await sequelize.query(`
+const addAgent = async (requestData) => await sequelize().query(`
     INSERT INTO headacc (address1, city, districtCode, headType, heada_code, accCode, heada_name, operCode, phone1, pinCode, place, state)
     VALUES (:address1, :city, :districtCode, :headType, :heada_code, :accCode, :heada_name, :operCode, :phone1, :pinCode, :place, :state)
 `, {
@@ -57,7 +57,7 @@ const addAgent = async (requestData) => await sequelize.query(`
   type: sequelize.QueryTypes.INSERT
 });
 
-const updateAgent = async (requestData) => await sequelize.query(`
+const updateAgent = async (requestData) => await sequelize().query(`
     UPDATE headacc
     SET address1 = :address1,
         city = :city,
@@ -91,7 +91,7 @@ const updateAgent = async (requestData) => await sequelize.query(`
   type: sequelize.QueryTypes.UPDATE
 });
 
-const deleteAgent = async (requestData) => (await sequelize.query(`UPDATE headacc
+const deleteAgent = async (requestData) => (await sequelize().query(`UPDATE headacc
     SET active = :active WHERE heada_code = :heada_code`, {
   replacements: {
     active: false,

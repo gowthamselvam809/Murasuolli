@@ -1,13 +1,17 @@
+const { where } = require('sequelize');
 const sequelize = require('../../sequelize')
 const { getCurrentTimestamp } = require('../helper/util')
 const { copyConfirmModal } = require('../models')
 
 const fetchAllCopyConfirm = async () => {
   const copyConfirmRecords = await copyConfirmModal.findAll({
-    attributes: ['sno', 'partyCode', 'magId', 'commId', 'copies', 'updated'],
+    where: { magId: 1 },
+    attributes: ['sno', 'partyCode', 'magId', 'commId', 'closed', 'copies', 'updated'],
     raw: true,
+    order: [
+      ['partyCode', 'ASC']
+    ],
   });
-
   const recordsWithId = copyConfirmRecords.map(record => ({
     ...record,
     id: record.sno

@@ -4,6 +4,8 @@ const fs = require("fs");
 const msDay = 86400000;
 const uuid = require("uuidv4");
 const { StatusCodes } = require('http-status-codes');
+const redis = require('redis');
+const client = redis.createClient();
 
 exports.ERROR = StatusCodes;
 
@@ -354,3 +356,27 @@ exports.countElement = (marking, year) => {
     }
     return elementCount;
 }
+
+exports.subtractDays = (dateStr, days) => {
+    let dateObj = new Date(dateStr);
+    dateObj.setDate(dateObj.getDate() - days);
+    let newDateStr = dateObj.toISOString().split('T')[0];
+    return newDateStr;
+}
+
+exports.setRedis = (key, value) => client.set(key, value, (err, reply) => {
+    if (err) {
+        console.error('Error storing data:', err);
+    } else {
+        console.log('Data stored successfully:', reply);
+    }
+});
+
+exports.getRedis = (key) => client.get(key, (err, reply) => {
+    if (err) {
+        console.error('Error retrieving data:', err);
+    } else {
+        console.log('Retrieved data:', reply);
+        return reply;
+    }
+});

@@ -50,6 +50,7 @@ const AgentCreation = () => {
 
     useEffect(() => {
         if (isEdit) {
+            console.log(isEdit)
             Object.keys(isEdit).forEach((key) => {
                 if (key === "address1") {
                     let fullAddress = isEdit[key];
@@ -187,6 +188,7 @@ const AgentCreation = () => {
     }
 
     const rowsWithIds = allAgent.map((row, index) => ({
+        ...row,
         heada_code: row.heada_code,
         id: index + 1,
         heada_name: row.heada_name,

@@ -1,6 +1,7 @@
 const ErrorMessage = {
   INVALID_EMAIL: "Invalid Email!",
   EMAIL_REQUIRED: "Email is required!",
+  USER_REQUIRED: "Operator is required!",
   INVALID_OTP: "Invalid OTP!",
   OTP_REQUIRED: "Please Enter 6 digit OTP",
   PASSWORD_MIN: "Password must be at least 6 characters",

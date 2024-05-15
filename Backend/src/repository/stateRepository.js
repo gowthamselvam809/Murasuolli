@@ -10,6 +10,15 @@ const fetchStateById = async (id) => (await stateModal.findOne({
   order: [['stateCode', 'ASC']]
 }));
 
+const fetchStateByName = async (name) => (await stateModal.findOne({
+  where: { stateName: name },
+  attributes: {
+    exclude: ['id']
+  },
+  order: [['stateCode', 'ASC']]
+}));
+
+
 const fetchAllState = async () => (await stateModal.findAll({
   attributes: {
     exclude: ['id']
@@ -54,5 +63,6 @@ module.exports = {
   fetchStateById,
   fetchAllState,
   createState,
-  updateState
+  updateState,
+  fetchStateByName
 }

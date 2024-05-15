@@ -1,4 +1,4 @@
-const { formatErrorResponse, isEmptyObject } = require('../helper/util');
+const { formatErrorResponse, isEmptyObject, isEmptyArray } = require('../helper/util');
 const { districtRepository } = require('../repository');
 
 
@@ -7,10 +7,15 @@ const fetchAllDistrict = async (request) => {
 }
 
 const createDistrict = async (request) => {
-    const { areaCode } = request;
+    const { areaCode, stCode, areaName } = request;
     const isUnique = await districtRepository.fetchDistrictById(areaCode);
     if (isUnique === null || isEmptyObject(isUnique)) {
-        return await districtRepository.createDistrict(request);
+        const uniqueDistrict = await districtRepository.fetchDistrictByStateId(stCode);
+        if (isEmptyArray(uniqueDistrict) || isEmptyArray(uniqueDistrict.filter((dis) => dis.areaName === areaName.toUpperCase()))) {
+            return await districtRepository.createDistrict(request);
+        } else {
+            throw formatErrorResponse("District Name is already present, Try new Name")
+        }
     } else {
         throw formatErrorResponse("District Code is already Present, Try different Code");
 

@@ -54,3 +54,18 @@ export const sortArrayOfObjects = (arr, keyToSort, direction) => {
 
   return arr.slice().sort(compare)
 }
+
+export const dateFormatWithYYYYMMDD = (date) => {
+  const currentDate = new Date(date);
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+export const subtractDays = (dateStr, days) => {
+  let dateObj = new Date(dateStr);
+  dateObj.setDate(dateObj.getDate() - days);
+  let newDateStr = dateObj.toISOString().split('T')[0];
+  return newDateStr;
+}

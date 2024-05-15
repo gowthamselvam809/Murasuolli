@@ -3,7 +3,7 @@ import { ErrorMessage } from "./message";
 import { Common } from "./";
 
 const SignupFormSchema = Yup.object().shape({
-  email: Yup.string().email(ErrorMessage.INVALID_EMAIL).required(ErrorMessage.EMAIL_REQUIRED),
+  operator: Yup.string().required(ErrorMessage.USER_REQUIRED),
   password: Yup.string().required(ErrorMessage.PASSWORD_REQUIRED),
 });
 

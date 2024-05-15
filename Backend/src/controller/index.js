@@ -5,6 +5,10 @@ const magazineController = require('./magazineController')
 const reasonController = require('./reasonController')
 const copyConfirmController = require('./copyConfirmController')
 const commissionController = require('./commissionController')
+const issuesController = require('./issuesController')
+const companyController = require('./companyController')
+const financialYearController = require('./financialYearController')
+const operatorController = require('./operatorController')
 
 module.exports = {
     headAccController,
@@ -13,5 +17,9 @@ module.exports = {
     magazineController,
     reasonController,
     copyConfirmController,
-    commissionController
+    commissionController,
+    issuesController,
+    companyController,
+    financialYearController,
+    operatorController
 }

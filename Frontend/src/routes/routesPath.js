@@ -12,6 +12,10 @@ import Commission from "../components/master/commission";
 import Operator from "../components/master/operator";
 import District from "../components/master/district";
 import States from "../components/master/states";
+import Transaction from "../pages/transaction";
+import ProcessPage from "../pages/process";
+import EditIssue from "../pages/process/editProcessPage";
+import ReceiptsPage from "../pages/receipts";
 
 export const routerData = [
   {
@@ -91,6 +95,30 @@ export const routerData = [
     exact: false,
     layOut: true,
     element: <States />
+  },
+  {
+    path: '/transaction',
+    exact: false,
+    layOut: true,
+    element: <Transaction />
+  },
+  {
+    path: '/processIssue',
+    exact: false,
+    layOut: true,
+    element: <ProcessPage />
+  },
+  {
+    path: '/receipts',
+    exact: false,
+    layOut: true,
+    element: <ReceiptsPage />
+  },
+  {
+    path: '/editIssue',
+    exact: false,
+    layOut: true,
+    element: <EditIssue />
   },
   {
     path: pageRoutes.home,

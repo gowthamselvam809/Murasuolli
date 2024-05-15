@@ -7,7 +7,7 @@ import { SessionStorage, fortmatData } from "../utils";
 
 export const axiosInstance = axios.create({
   baseURL: `${Url.baseApiUrl}`,
-  timeout: 10000
+  timeout: 100000
 });
 
 axiosInstance.defaults.headers = {
@@ -42,6 +42,15 @@ axiosInstance.interceptors.request.use(function (config) {
   // Do something before request is sent
   // config.headers.test = 'I am only a header!'; // EX: Add jwt token
   // console.log("config",config);
+  const prefix = localStorage.getItem('prefix');
+  if (prefix) {
+    config.headers.database = prefix + 'master';
+  }
+  const financialDB = localStorage.getItem('financialDB');
+
+  if (financialDB) {
+    config.headers.financial = financialDB;
+  }
 
   const token = SessionStorage.getItem(SessionStorageKeys.SessionToken);
   config.headers.Authorization = token ? `${token}` : "";

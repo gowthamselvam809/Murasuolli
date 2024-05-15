@@ -64,11 +64,35 @@ const menuItem = [
     ]
   },
   {
-    type: menuItemTypes.link,
+    type: menuItemTypes.list,
     title: "Transaction",
     image: HomeIcon,
-    path: pageRoutes.transaction,
-    role: []
+    path: '',
+    role: [],
+    items: [
+      {
+        type: menuItemTypes.list,
+        title: "Issues",
+        path: '',
+        items: [
+          {
+            title: "Process Issue",
+            image: ProfileIcon,
+            path: '/processIssue',
+          },
+          {
+            title: "Edit Issue",
+            image: ProfileIcon,
+            path: '/editIssue',
+          }
+        ]
+      }, {
+        title: "Receipts",
+        image: ProfileIcon,
+        path: '/receipts',
+      },
+
+    ]
   },
   {
     type: menuItemTypes.link,

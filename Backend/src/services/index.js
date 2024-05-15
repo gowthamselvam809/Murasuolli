@@ -5,6 +5,10 @@ const magazineService = require('./magazineService')
 const reasonService = require('./reasonService')
 const copyConfirmService = require('./copyConfirmService')
 const commissionService = require('./commissionService')
+const issuesService = require('./issuesService')
+const companyService = require('./companyService')
+const financialYearService = require('./financialYearService')
+const operatorService = require('./operatorService')
 
 module.exports = {
     headAccService,
@@ -13,5 +17,9 @@ module.exports = {
     magazineService,
     reasonService,
     copyConfirmService,
-    commissionService
+    commissionService,
+    issuesService,
+    companyService,
+    financialYearService,
+    operatorService
 }

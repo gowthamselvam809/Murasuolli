@@ -1,129 +1,33 @@
-import { Add, Close } from "@mui/icons-material";
-import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { useForm } from "react-hook-form";
-import DataTable from "../common/dataTable";
-import Swal from "sweetalert2";
-import { createReason, fetchAllReason, updateReason } from "../../api/apiRegister";
+import React, { useState } from 'react'
+import { Button, Col, Container, Row } from 'react-bootstrap'
+import DataTable from '../../components/common/dataTable'
+import { useForm } from 'react-hook-form';
+import { Add, Close } from '@mui/icons-material';
 
-const Reason = () => {
+const ReceiptsPage = () => {
     const { register, handleSubmit, reset, formState: { errors }, setValue } = useForm();
-    const [isLoading, setIsLoading] = useState(false);
     const [isAdd, setIsAdd] = useState(false);
-    const [allReason, setAllReason] = useState([]);
-    const [isEdit, setIsEdit] = useState(false);
-    const [deposit, setDeposit] = useState('');
-
-    const onSubmit = async (values) => {
-        const data = {
-            ...values,
-            depositTrf: deposit === "Yes" ? 'Y' : 'N',
-        }
-        const response = isEdit ? await updateReason(data) : await createReason(data);
-        if (response) {
-            handleCancel();
-        }
-        console.log(values)
-    }
-
-    const fetchReason = async () => {
-        const response = await fetchAllReason();
-        setAllReason(response?.Items);
-    }
-
-    useEffect(() => {
-        fetchReason();
-    }, [isAdd])
-
-    useEffect(() => {
-        if (isEdit) {
-            Object.keys(isEdit).forEach((key) => (setValue(key, isEdit[key])));
-            setDeposit(isEdit.depositTrf === 'Y' ? "Yes" : "No")
-        }
-    }, [isEdit, setValue])
-
-
-    const handleRadioChange = (event) => {
-        setDeposit(event.target.value);
-    };
-
-    const handleEdit = (data) => {
-        setIsEdit(data);
-        setIsAdd(!isAdd);
-    }
-
-    const handleDelete = async (data) => {
-        setIsEdit(data);
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                // const response = await deleteAgent({ heada_code: data.heada_code });
-                // if (response) {
-                //     Swal.fire({
-                //         title: "Deleted!",
-                //         text: "Agent has been deleted.",
-                //         icon: "success"
-                //     });
-                // }
-            }
-            handleCancel();
-        });
-    }
-
-    const columns = [
-        { field: 'id', headerName: 'S.No.', width: 100 },
-        { field: 'reasonId', headerName: 'Reason ID', width: 120 },
-        { field: 'reasonName', headerName: 'Reason Name', width: 250 },
-        { field: 'deposit', headerName: 'Deposited', width: 100 },
-        // { field: 'pinCode', headerName: 'Pin Code', width: 100 },
-        {
-            headerName: 'Actions',
-            width: 150,
-            renderCell: (params) => (
-                <div>
-                    <Button variant="info" className="mx-2" size="sm" onClick={() => handleEdit(params.row)}>Edit</Button>{'  '}
-                    {/* <Button variant="danger" size="sm" onClick={() => handleDelete(params.row)}>Delete</Button> */}
-                </div>
-            ),
-        },
-    ];
-
-    const rowsWithIds = allReason.map((row, index) => ({
-        ...row,
-        id: index + 1,
-        deposit: row.depositTrf === 'Y' ? "Yes" : "No"
-    }));
 
     const handleCancel = () => {
         setIsAdd(false);
         reset();
-        setIsEdit(false);
-        setDeposit('')
     }
-
 
     return (
         <Container className="p-3">
             <Row className="mb-1 px-2">
                 <Col>
-                    <h3>Reason Entry</h3>
+                    <h3>Receipts</h3>
                 </Col>
                 <Col align='right'>{
                     !isAdd ? (<Button variant="primary" size="md" onClick={() => setIsAdd(!isAdd)}>
-                        Add Reason <Add style={{ marginLeft: '0.1em' }} />
+                        Add Receipts <Add style={{ marginLeft: '0.1em' }} />
                     </Button>) : (<Button variant="primary" size="md" onClick={() => handleCancel()}>
                         close<Close style={{ marginLeft: '0.1em' }} />
                     </Button>)
                 }</Col>
             </Row>
-            {!isAdd ? <DataTable column={columns} row={rowsWithIds} /> : (
+            {!isAdd ? <DataTable column={[]} row={[]} /> : (
                 <Form className='login_form p-2' onSubmit={handleSubmit(onSubmit)}>
                     <Row className="mb-3">
                         <Col lg={12} xl={12}>
@@ -184,9 +88,8 @@ const Reason = () => {
                     </Row>
                 </Form>
             )}
-
         </Container>
-    );
-};
+    )
+}
 
-export default Reason;
+export default ReceiptsPage

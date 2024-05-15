@@ -122,11 +122,12 @@ const CopyConfirm = () => {
     }
 
     const columns = [
-        { field: 'sno', headerName: 'S.No.', width: 100 },
+        { field: 'id', headerName: 'S.No.', width: 100 },
+        // { field: 'sno', headerName: 'S.No.', width: 100 },
         { field: 'partyCode', headerName: 'Party Code', width: 120 },
         { field: 'commName', headerName: 'Commission', width: 250 },
         { field: 'magName', headerName: 'Magazine', width: 200 },
-        // { field: 'pinCode', headerName: 'Pin Code', width: 100 },
+        { field: 'closed', headerName: 'Closed', width: 100 },
         {
             headerName: 'Actions',
             width: 150,

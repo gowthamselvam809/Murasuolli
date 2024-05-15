@@ -5,6 +5,10 @@ const magazineRepository = require('./magazineRepository');
 const reasonRepository = require('./reasonRepository');
 const copyConfirmRepository = require('./copyConfirmRepository');
 const commissionRepository = require('./commissionRepository');
+const issuesRepository = require('./issuesRepository');
+const companyRepository = require('./companyRepository');
+const financialYearRepository = require('./financialYearRepository');
+const operatorRepository = require('./operatorRepository');
 
 module.exports = {
     headAccRepository,
@@ -13,5 +17,9 @@ module.exports = {
     magazineRepository,
     reasonRepository,
     copyConfirmRepository,
-    commissionRepository
+    commissionRepository,
+    issuesRepository,
+    companyRepository,
+    financialYearRepository,
+    operatorRepository
 }
