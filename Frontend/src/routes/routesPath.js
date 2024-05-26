@@ -16,6 +16,8 @@ import Transaction from "../pages/transaction";
 import ProcessPage from "../pages/process";
 import EditIssue from "../pages/process/editProcessPage";
 import ReceiptsPage from "../pages/receipts";
+import DebitPage from "../pages/receipts/debit";
+import CreditPage from "../pages/receipts/credit";
 
 export const routerData = [
   {
@@ -143,5 +145,18 @@ export const routerData = [
     exact: false,
     layOut: false,
     element: <PageNotFound />
-  }
+  },
+  {
+    path: '/debitEntry',
+    exact: false,
+    layOut: true,
+    element: <DebitPage />
+  },
+  {
+    path: '/creditEntry',
+    exact: false,
+    layOut: true,
+    element: <CreditPage />
+  },
+
 ]

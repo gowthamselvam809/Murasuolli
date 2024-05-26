@@ -5,10 +5,11 @@ const magazineModal = require('./magazineModal')
 const reasonModal = require('./reasonModal')
 const copyConfirmModal = require('./copyConfirmModal')
 const commissionModal = require('./commissionModal')
-const issuesModal = require('./issuesModal')
 const companyModal = require('./companyModal')
+const issuesModal = require('./issuesModal')
 const financialYearModal = require('./financialYearModal')
 const operatorModal = require('./operatorModal')
+const collectionModal = require('./collectionModal')
 
 module.exports = {
     headAccModal,
@@ -18,8 +19,9 @@ module.exports = {
     reasonModal,
     copyConfirmModal,
     commissionModal,
-    issuesModal,
     companyModal,
+    issuesModal,
     financialYearModal,
-    operatorModal
+    operatorModal,
+    collectionModal
 }   

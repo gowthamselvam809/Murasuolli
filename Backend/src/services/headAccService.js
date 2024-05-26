@@ -34,11 +34,21 @@ const fetchAllBankType = async (request) => {
     return await headAccRepository.fetchAllBankType(request);
 }
 
+const fetchAgentForDropdown = async (request) => {
+    return await headAccRepository.fetchAgentForDropdown(request);
+}
+
+const fetchBankForDropdown = async (request) => {
+    return await headAccRepository.fetchBankForDropdown(request);
+}
+
 module.exports = {
     fetchUser,
     fetchAllUser,
     addAgent,
     updateAgent,
     deleteAgent,
-    fetchAllBankType
+    fetchAllBankType,
+    fetchAgentForDropdown,
+    fetchBankForDropdown
 }

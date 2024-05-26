@@ -3,7 +3,7 @@ const { reasonRepository } = require('../repository');
 
 
 const fetchAllReason = async (request) => {
-    return await reasonRepository.fetchAllReason();
+    return await reasonRepository.fetchAllReason(request);
 }
 
 const updateReason = async (request) => {
@@ -20,8 +20,13 @@ const createReason = async (request) => {
     }
 }
 
+const fetchReasonForDropdown = async (request) => {
+    return await reasonRepository.fetchReasonForDropdown(request);
+}
+
 module.exports = {
     fetchAllReason,
     updateReason,
-    createReason
+    createReason,
+    fetchReasonForDropdown
 }

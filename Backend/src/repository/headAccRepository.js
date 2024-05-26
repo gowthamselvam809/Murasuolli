@@ -1,4 +1,4 @@
-const sequelize = require('../../sequelize');
+const sequelize = require('../../dynamicSequelize');
 const { getCurrentTimestamp, formatErrorResponse } = require('../helper/util');
 const { headAccModal } = require('../models')
 
@@ -36,7 +36,7 @@ const fetchAllBankType = async () => (await headAccModal.findAll({
   }
 }))
 
-const addAgent = async (requestData) => await sequelize().query(`
+const addAgent = async (requestData) => await sequelize(requestData.dbName).query(`
     INSERT INTO headacc (address1, city, districtCode, headType, heada_code, accCode, heada_name, operCode, phone1, pinCode, place, state)
     VALUES (:address1, :city, :districtCode, :headType, :heada_code, :accCode, :heada_name, :operCode, :phone1, :pinCode, :place, :state)
 `, {
@@ -57,7 +57,7 @@ const addAgent = async (requestData) => await sequelize().query(`
   type: sequelize.QueryTypes.INSERT
 });
 
-const updateAgent = async (requestData) => await sequelize().query(`
+const updateAgent = async (requestData) => await sequelize(requestData.dbName).query(`
     UPDATE headacc
     SET address1 = :address1,
         city = :city,
@@ -91,7 +91,7 @@ const updateAgent = async (requestData) => await sequelize().query(`
   type: sequelize.QueryTypes.UPDATE
 });
 
-const deleteAgent = async (requestData) => (await sequelize().query(`UPDATE headacc
+const deleteAgent = async (requestData) => (await sequelize(requestData.dbName).query(`UPDATE headacc
     SET active = :active WHERE heada_code = :heada_code`, {
   replacements: {
     active: false,
@@ -99,6 +99,9 @@ const deleteAgent = async (requestData) => (await sequelize().query(`UPDATE head
   }
 }))
 
+const fetchAgentForDropdown = async (requestData) => (await sequelize(requestData.dbName).query(`SELECT heada_code as value, heada_name as label from headacc`))
+
+const fetchBankForDropdown = async (requestData) => (await sequelize(requestData.dbName).query(`SELECT heada_code as value, heada_name as label from headacc where headType = 'B'`))
 
 module.exports = {
   fetchUserById,
@@ -106,5 +109,7 @@ module.exports = {
   addAgent,
   updateAgent,
   deleteAgent,
-  fetchAllBankType
+  fetchAllBankType,
+  fetchAgentForDropdown,
+  fetchBankForDropdown
 }

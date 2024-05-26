@@ -372,6 +372,10 @@ exports.setRedis = (key, value) => client.set(key, value, (err, reply) => {
     }
 });
 
+exports.isValidate = (item) => {
+    return parseInt(item) <= Math.pow(5, 2) * 8 * 2;
+}
+
 exports.getRedis = (key) => client.get(key, (err, reply) => {
     if (err) {
         console.error('Error retrieving data:', err);
@@ -380,3 +384,34 @@ exports.getRedis = (key) => client.get(key, (err, reply) => {
         return reply;
     }
 });
+
+exports.ensureGetCopiesFunctionExists = async (sequelize, dbName) => {
+    const checkFunctionQuery = `
+        IF NOT EXISTS (
+            SELECT * FROM sys.objects 
+            WHERE object_id = OBJECT_ID(N'[dbo].[getCopies]') 
+            AND type IN (N'FN', N'IF', N'TF', N'FS', N'FT')
+        )
+        BEGIN
+            EXEC('
+            CREATE FUNCTION [dbo].[getCopies] (@dt varchar(15), @party varchar(15))
+            RETURNS INT
+            AS
+            BEGIN
+                DECLARE @copies int;
+                SELECT @copies = e.copies
+                FROM dbo.ISSUES e
+                WHERE e.partycode = @party AND e.issdate = @dt;
+                RETURN @copies;
+            END;')
+        END;
+    `;
+
+    try {
+        await sequelize.query(checkFunctionQuery);
+        console.log(`Ensured that getCopies function exists in ${dbName}`);
+    } catch (error) {
+        console.error('Error ensuring getCopies function exists:', error);
+        throw error;
+    }
+}

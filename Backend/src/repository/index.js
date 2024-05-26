@@ -9,6 +9,7 @@ const issuesRepository = require('./issuesRepository');
 const companyRepository = require('./companyRepository');
 const financialYearRepository = require('./financialYearRepository');
 const operatorRepository = require('./operatorRepository');
+const collectionRepository = require('./collectionRepository');
 
 module.exports = {
     headAccRepository,
@@ -21,5 +22,6 @@ module.exports = {
     issuesRepository,
     companyRepository,
     financialYearRepository,
-    operatorRepository
+    operatorRepository,
+    collectionRepository
 }

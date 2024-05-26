@@ -12,8 +12,8 @@ const swaggerUI = require('swagger-ui-express')
 const yaml = require('js-yaml')
 const swaggerJSDocs = yaml.load('./api.yaml')
 
-const { headAccController, stateController, districtController, magazineController, reasonController, copyConfirmController, commissionController, issuesController, companyController, financialYearController, operatorController } = require('./src/controller')
-const { auth, validator } = require('./src/middleware');
+const { headAccController, stateController, districtController, magazineController, reasonController, copyConfirmController, commissionController, issuesController, companyController, financialYearController, operatorController, collectionController } = require('./src/controller')
+const { auth, validator, authenticator } = require('./src/middleware');
 const { constant: { Environment, Roles } } = require("./src/constants");
 const { util: { ERROR } } = require('./src/helper');
 
@@ -38,42 +38,54 @@ app.use(fileUpload());
 app.use(cors());
 
 app.get('/', (req, res) => { res.send('Welcome to Murasuolli!!!'); });
-app.post("/fetchAgent", headAccController.fetchUser);
-app.post("/fetchAllAgent", headAccController.fetchAllUser);
-app.post("/fetchAllState", stateController.fetchAllState);
-app.post("/createState", stateController.createState);
-app.post("/updateState", stateController.updateState);
-app.post("/fetchAllDistrict", districtController.fetchAllDistrict);
-app.post("/updateDistrict", districtController.updateDistrict);
-app.post("/createDistrict", districtController.createDistrict);
-app.post("/addAgent", headAccController.addAgent);
-app.post("/updateAgent", headAccController.updateAgent);
-app.post("/deleteAgent", headAccController.deleteAgent);
-app.post("/fetchAllMagazine", magazineController.fetchAllMagazine);
-app.post("/updateMagazine", magazineController.updateMagazine);
-app.post("/createMagazine", magazineController.createMagazine);
-app.post("/fetchAllBankType", headAccController.fetchAllBankType);
-app.post("/fetchAllReason", reasonController.fetchAllReason);
-app.post("/updateReason", reasonController.updateReason);
-app.post("/createReason", reasonController.createReason);
-app.post("/fetchAllCopyConfirm", copyConfirmController.fetchAllCopyConfirm);
-app.post("/updateCopyConfirm", copyConfirmController.updateCopyConfirm);
-app.post("/createCopyConfirm", copyConfirmController.createCopyConfirm);
-app.post("/fetchAllCommission", commissionController.fetchAllCommission);
-app.post("/createCommission", commissionController.createCommission);
-app.post("/updateCommission", commissionController.updateCommission);
-app.post("/updateCommission", commissionController.updateCommission);
-app.post("/updateCommission", commissionController.updateCommission);
-app.post("/fetchAllIssuesBasedOnDates", issuesController.fetchAllIssuesBasedOnDates);
-app.post("/fetchIssuesBasedOnDate", issuesController.fetchIssuesBasedOnDate);
-app.post("/insertIssues", issuesController.insertIssues);
-app.post("/fetchMaxIssDate", issuesController.fetchMaxIssDate);
-app.post("/fetchEditIssuesByDate", issuesController.fetchEditIssuesByDate);
-app.post("/updateIssueCopy", issuesController.updateIssueCopy);
-app.post("/fetchAllCompanies", companyController.fetchAllCompanies);
-app.post("/fetchAllFinancialYear", financialYearController.fetchAllFinancialYear);
-app.post("/fetchAllOperator", operatorController.fetchAllOperator);
-app.post("/userLogin", operatorController.userLogin);
+app.post("/fetchAgent", authenticator, headAccController.fetchUser);
+app.post("/fetchAllAgent", authenticator, headAccController.fetchAllUser);
+app.post("/fetchBankForDropdown", authenticator, headAccController.fetchBankForDropdown);
+app.post("/fetchAllState", authenticator, stateController.fetchAllState);
+app.post("/createState", authenticator, stateController.createState);
+app.post("/updateState", authenticator, stateController.updateState);
+app.post("/fetchAllDistrict", authenticator, districtController.fetchAllDistrict);
+app.post("/updateDistrict", authenticator, districtController.updateDistrict);
+app.post("/createDistrict", authenticator, districtController.createDistrict);
+app.post("/addAgent", authenticator, headAccController.addAgent);
+app.post("/fetchAgentForDropdown", authenticator, headAccController.fetchAgentForDropdown);
+app.post("/updateAgent", authenticator, headAccController.updateAgent);
+app.post("/deleteAgent", authenticator, headAccController.deleteAgent);
+app.post("/fetchAllMagazine", authenticator, magazineController.fetchAllMagazine);
+app.post("/updateMagazine", authenticator, magazineController.updateMagazine);
+app.post("/createMagazine", authenticator, magazineController.createMagazine);
+app.post("/fetchAllBankType", authenticator, headAccController.fetchAllBankType);
+app.post("/fetchAllReason", authenticator, reasonController.fetchAllReason);
+app.post("/updateReason", authenticator, reasonController.updateReason);
+app.post("/createReason", authenticator, reasonController.createReason);
+app.post("/fetchReasonForDropdown", authenticator, reasonController.fetchReasonForDropdown);
+app.post("/fetchAllCopyConfirm", authenticator, copyConfirmController.fetchAllCopyConfirm);
+app.post("/updateCopyConfirm", authenticator, copyConfirmController.updateCopyConfirm);
+app.post("/createCopyConfirm", authenticator, copyConfirmController.createCopyConfirm);
+app.post("/fetchAllCommission", authenticator, commissionController.fetchAllCommission);
+app.post("/createCommission", authenticator, commissionController.createCommission);
+app.post("/updateCommission", authenticator, commissionController.updateCommission);
+app.post("/updateCommission", authenticator, commissionController.updateCommission);
+app.post("/updateCommission", authenticator, commissionController.updateCommission);
+app.post("/fetchAllIssuesBasedOnDates", authenticator, issuesController.fetchAllIssuesBasedOnDates);
+app.post("/fetchIssuesBasedOnDate", authenticator, issuesController.fetchIssuesBasedOnDate);
+app.post("/insertIssues", authenticator, issuesController.insertIssues);
+app.post("/fetchMaxIssDate", authenticator, issuesController.fetchMaxIssDate);
+app.post("/fetchEditIssuesByDate", authenticator, issuesController.fetchEditIssuesByDate);
+app.post("/updateIssueCopy", authenticator, issuesController.updateIssueCopy);
+app.post("/fetchAllCompanies", authenticator, companyController.fetchAllCompanies);
+app.post("/fetchAllFinancialYear", authenticator, financialYearController.fetchAllFinancialYear);
+app.post("/fetchAllOperator", authenticator, operatorController.fetchAllOperator);
+app.post("/userLogin", authenticator, operatorController.userLogin);
+app.post("/fetchAllCollection", authenticator, collectionController.fetchAllCollection);
+app.post("/fetchReceiptNo", authenticator, collectionController.fetchReceiptNo);
+app.post("/fetchVoucherNo", authenticator, collectionController.fetchVoucherNo);
+app.post("/insertCollection", authenticator, collectionController.insertCollection);
+app.post("/updateCollection", authenticator, collectionController.updateCollection);
+app.post("/fetchEntryNo", authenticator, collectionController.fetchEntryNo);
+
+app.use(timeout('180s'));
+
 
 function haltOnTimedout(req, res, next) {
     if (!req.timedout) next()

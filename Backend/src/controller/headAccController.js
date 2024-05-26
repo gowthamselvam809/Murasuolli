@@ -62,11 +62,33 @@ const fetchAllBankType = async (req, res, next) => {
     }
 };
 
+const fetchAgentForDropdown = async (req, res, next) => {
+    try {
+        let request = req.body;
+        let result = await headAccService.fetchAgentForDropdown(request);
+        res.send(formatResponse(result));
+    } catch (error) {
+        next(error);
+    }
+};
+
+const fetchBankForDropdown = async (req, res, next) => {
+    try {
+        let request = req.body;
+        let result = await headAccService.fetchBankForDropdown(request);
+        res.send(formatResponse(result));
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     fetchUser,
     fetchAllUser,
     addAgent,
     updateAgent,
     deleteAgent,
-    fetchAllBankType
+    fetchAllBankType,
+    fetchAgentForDropdown,
+    fetchBankForDropdown
 }

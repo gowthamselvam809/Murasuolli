@@ -6,22 +6,28 @@ import Swal from "sweetalert2";
 import { is, isEmptyArray } from '../../../utils';
 import DataTable from '../../common/dataTable';
 import { dateFormatWithYYYYMMDD } from '../../../utils/utils';
+import { Close } from '@mui/icons-material';
+import Loader from '../../common/Loader';
 
 const ProcessEdit = () => {
     const [allIssues, setAllIssues] = useState([])
     const [click, setClicked] = useState(true);
     const [date, setDate] = useState('');
     const [issue, setIssue] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [columnKey, setColumnKey] = useState([]);
 
     const handleClick = async () => {
-        const response = await fetchEditIssuesByDate({ dbName: 'MURM2425', issDate: date });
+        setLoading(true);
+        const response = await fetchEditIssuesByDate({ issDate: date });
         if (response) {
             setAllIssues(response?.Items[0]);
             const key = Object.keys(response.Items[0][0]);
             setColumnKey(key);
             setClicked(true);
         }
+        setLoading(false);
+
     }
 
     const handleEdit = (data) => {
@@ -45,15 +51,10 @@ const ProcessEdit = () => {
             if (result.isConfirmed) {
                 const inputValue = result.value;
                 setAllIssues((issues) => issues.map((is) => is.partyCode === data.partyCode ? { ...is, today: inputValue } : is));
-                const response = await updateIssueCopy({ dbName: 'MURM2425', copies: inputValue, today: date, partyCode: data.partyCode });
+                const response = await updateIssueCopy({ copies: inputValue, today: date, partyCode: data.partyCode });
                 if (response) {
-                    Swal.fire({
-                        title: "Changed!",
-                        text: "Issues has been updated.",
-                        icon: "success"
-                    });
+                    setIssue(true)
                 }
-                setIssue(true)
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 setIssue(false);
             }
@@ -96,7 +97,7 @@ const ProcessEdit = () => {
 
 
     const fetchMaxDate = async () => {
-        const response = await fetchMaxIssDate({ dbName: 'murm2425' });
+        const response = await fetchMaxIssDate();
         if (response) {
             if (response?.Items[0]) {
                 setClicked(false);
@@ -110,7 +111,7 @@ const ProcessEdit = () => {
     }, [])
 
     return (
-        <Container className='d-flex justify-content-center align-items-center h-100' style={{ background: !click ? '#DBDBDB' : 'none', borderRadius: 10 }} >
+        <Container className='d-flex justify-content-center align-items-center h-100' style={{ background: !click ? '#DBDBDB' : 'none', borderRadius: 10, position: 'relative' }} >
             {
                 isEmptyArray(allIssues) ? (
                     <Card title='Process the Issue' style={{ height: '30vh', width: '30vw' }}>
@@ -147,11 +148,21 @@ const ProcessEdit = () => {
                     </Card>
                 ) : (
                     <div className='w-100'>
+                        <Row className="mb-1 px-2">
+                            <Col>
+                                <h3>Edit Issues</h3>
+                            </Col>
+                            <Col align='right'><Button variant="primary" size="md" onClick={() => { setClicked(false); setAllIssues([]) }}>
+                                close<Close style={{ marginLeft: '0.1em' }} />
+                            </Button>
+                            </Col>
+                        </Row>
                         <DataTable column={columns} row={allIssues} />
                     </div>
                 )
 
             }
+            {loading && (<Loader loading={loading} />)}
         </Container>
     )
 }

@@ -1,94 +1,9 @@
-// import React from "react";
-// import { useNavigate, useLocation } from "react-router-dom";
-// import Accordion from "react-bootstrap/Accordion";
-// import classNames from "classnames";
-
-// import { Common, menuItem, menuItemTypes, pageRoutes } from "../../helper";
-// import { SessionStorage } from "../../utils";
-
-// import LogOutIcon from "../../assets/Logout.png";
-// import logo from "../../assets/murasuoliLogo.jpg";
-
-// const SideNav = () => {
-//   const navigate = useNavigate();
-//   const location = useLocation();
-
-//   const logOut = () => {
-//     SessionStorage.clearAll();
-//     navigate(pageRoutes.login)
-//   }
-
-//   return (
-//     <div className="side-nav__container">
-//       <img src={logo} alt="" className="nav__logo" />
-//       <div className="side-nav__paths">
-//         {menuItem?.map((item, index) => (
-//           <label
-//             className={classNames("router-link", {
-//               "active-link": location.pathname === item.path
-//             })}
-//             key={index}
-//           >
-//             {
-//               <>
-//                 {item.type === menuItemTypes.list ? (
-//                   <Accordion className="nav__dropdown">
-//                     <Accordion.Item eventKey={index}>
-//                       <Accordion.Header className="nav__item">
-//                         <img className="nav__icon" src={item.image} alt="" />
-//                         <label className={classNames("nav__item", {
-//                           "active-link": item.items.some((listItem) => location.pathname === listItem.path)
-//                         })} style={{ fontSize: 18 }}>{item.title}</label>
-//                       </Accordion.Header>
-//                       <Accordion.Body>
-//                         {item.items.map((listItem, i) => (
-//                           <div
-//                             key={i}
-//                             onClick={() => navigate(listItem.path)}
-//                             className={classNames("nav__item", {
-//                               "active-link": location.pathname === listItem.path
-//                             })}
-//                           >
-//                             <label className="nav__item" style={{ marginLeft: 18, fontSize: 15 }}>{listItem.title}</label>
-//                           </div>
-//                         ))}
-//                       </Accordion.Body>
-//                     </Accordion.Item>
-//                   </Accordion>
-//                 ) : (
-//                   <div
-//                     className={classNames("nav__item", {
-//                       "active-link": location.pathname === item.path
-//                     })}
-//                     onClick={() => navigate(item.path)}
-//                     key={index}
-//                   >
-//                     <img className="nav__icon" src={item.image} alt="" />
-//                     <label>{item.title}</label>
-//                   </div>
-//                 )}
-//               </>
-//             }
-//           </label>
-//         ))}
-//         <div className="nav__item" style={{ marginLeft: 30 }} onClick={() => logOut()}>
-//           <label className="nav__label">
-//             <img className="nav__icon" src={LogOutIcon} alt="" />
-//             {Common.Logout}
-//           </label>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export { SideNav };
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Accordion from "react-bootstrap/Accordion";
 import classNames from "classnames"; // Import classNames library
 
+import { requestComponent } from "../../utils/common";
 import { Common, menuItem, menuItemTypes, pageRoutes } from "../../helper";
 import { SessionStorage } from "../../utils";
 
@@ -98,11 +13,21 @@ import logo from "../../assets/murasuoliLogo.jpg";
 const SideNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [confirmed, setConfirmed] = useState(requestComponent())
   const logOut = () => {
     SessionStorage.clearAll();
     navigate(pageRoutes.login);
   };
+
+  useEffect(() => {
+    setConfirmed(requestComponent());
+  }, [location.pathname])
+
+  useEffect(() => {
+    if (!confirmed) {
+      setConfirmed(requestComponent());
+    }
+  }, [confirmed])
 
   return (
     <div className="side-nav__container">
@@ -115,7 +40,7 @@ const SideNav = () => {
             })}
             key={index}
           >
-            {item.type === menuItemTypes.list ? (
+            {item.type === menuItemTypes.list ? item.valid && confirmed ? (
               <Accordion className="nav__dropdown">
                 <Accordion.Item eventKey={index}>
                   <Accordion.Header className="nav__item">
@@ -189,12 +114,35 @@ const SideNav = () => {
                   </Accordion.Body>
                 </Accordion.Item>
               </Accordion>
-            ) : (
+            ) : (<>
+              <img className="nav__icon" src={item.image} alt="" />
+              <label
+                className={classNames("nav__item", {
+                  "active-link": item.items.some(
+                    (listItem) => location.pathname === listItem.path
+                  ),
+                })}
+                style={{ fontSize: 18 }}
+              >
+                {item.title}
+              </label>
+            </>) : item.valid && confirmed ? (
+
               <div
                 className={classNames("nav__item", {
                   "active-link": location.pathname === item.path,
                 })}
                 onClick={() => navigate(item.path)}
+                key={index}
+              >
+                <img className="nav__icon" src={item.image} alt="" />
+                <label>{item.title}</label>
+              </div>
+            ) : (
+              <div
+                className={classNames("nav__item", {
+                  "active-link": location.pathname === item.path,
+                })}
                 key={index}
               >
                 <img className="nav__icon" src={item.image} alt="" />

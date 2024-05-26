@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../../sequelize');
+const sequelize = require('../../dynamicSequelize');
 
 
-const reasonModal = sequelize.define('reason', {
+const reasonModal = (dbName) => (sequelize(dbName).define('reason', {
     reasonId: { type: DataTypes.STRING },
     reasonName: { type: DataTypes.STRING },
     reasonShort: { type: DataTypes.STRING },
@@ -14,7 +14,7 @@ const reasonModal = sequelize.define('reason', {
 }, {
     tableName: 'reason',
     timestamps: false
-});
+}));
 
 
 module.exports = reasonModal;

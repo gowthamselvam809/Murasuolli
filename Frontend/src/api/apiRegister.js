@@ -43,6 +43,15 @@ export const updateIssueCopy = async (data) => (await apiClient.postAPICall(apiR
 export const fetchAllCompanies = async (data) => (await apiClient.postAPICall(apiRoutes.fetchAllCompanies, data))?.data;
 export const fetchAllFinancialYear = async (data) => (await apiClient.postAPICall(apiRoutes.fetchAllFinancialYear, data))?.data;
 export const fetchAllOperator = async (data) => (await apiClient.postAPICall(apiRoutes.fetchAllOperator, data))?.data;
+export const fetchAgentForDropdown = async (data) => (await apiClient.postAPICall(apiRoutes.fetchAgentForDropdown, data))?.data;
+export const fetchAllCollection = async (data) => (await apiClient.postAPICall(apiRoutes.fetchAllCollection, data))?.data;
+export const fetchReceiptNo = async (data) => (await apiClient.postAPICall(apiRoutes.fetchReceiptNo, data))?.data;
+export const fetchVoucherNo = async (data) => (await apiClient.postAPICall(apiRoutes.fetchVoucherNo, data))?.data;
+export const fetchBankForDropdown = async (data) => (await apiClient.postAPICall(apiRoutes.fetchBankForDropdown, data))?.data;
+export const fetchReasonForDropdown = async (data) => (await apiClient.postAPICall(apiRoutes.fetchReasonForDropdown, data))?.data;
+export const insertCollection = async (data) => (await apiClient.postAPICall(apiRoutes.insertCollection, data))?.data;
+export const updateCollection = async (data) => (await apiClient.postAPICall(apiRoutes.updateCollection, data))?.data;
+export const fetchEntryNo = async (data) => (await apiClient.postAPICall(apiRoutes.fetchEntryNo, data))?.data;
 
 export const getAllUsers = async (data) => (await apiClient.postAPICall(apiRoutes.getAllUsers, data))?.data;
 export const deleteUser = async (data) => (await apiClient.postAPICall(apiRoutes.deleteUser, data))?.data;

@@ -1,14 +1,14 @@
-const sequelize = require('../../sequelize')
+const sequelize = require('../../dynamicSequelize')
 const { getCurrentTimestamp } = require('../helper/util')
 const { reasonModal } = require('../models')
 
-const fetchAllReason = async () => (await reasonModal.findAll({
+const fetchAllReason = async (requestData) => (await reasonModal(requestData.dbName).findAll({
   attributes: {
     exclude: ['id']
   }
 }))
 
-const fetchReasonById = async (id) => (await reasonModal.findOne({
+const fetchReasonById = async (id) => (await reasonModal(requestData.dbName).findOne({
   where: { reasonId: id },
   attributes: {
     exclude: ['id']
@@ -17,7 +17,7 @@ const fetchReasonById = async (id) => (await reasonModal.findOne({
 }));
 
 
-const updateReason = async (requestData) => (await sequelize.query(`
+const updateReason = async (requestData) => (await sequelize(requestData.dbName).query(`
             UPDATE reason
             SET reasonName = :reasonName,
                 depositTrf = :depositTrf,
@@ -34,7 +34,7 @@ const updateReason = async (requestData) => (await sequelize.query(`
   logging: console.log
 }))
 
-const createReason = async (requestData) => (await sequelize.query(`
+const createReason = async (requestData) => (await sequelize(requestData.dbName).query(`
      INSERT INTO reason (reasonName, reasonId, depositTrf, updated)
             VALUES (:reasonName, :reasonId, :depositTrf, :updated)
 `, {
@@ -48,9 +48,13 @@ const createReason = async (requestData) => (await sequelize.query(`
   logging: console.log
 }))
 
+const fetchReasonForDropdown = async (requestData) => (await sequelize(requestData.dbName).query(`SELECT reasonId as value, reasonName as label from reason`))
+
+
 module.exports = {
   fetchAllReason,
   updateReason,
   createReason,
-  fetchReasonById
+  fetchReasonById,
+  fetchReasonForDropdown
 }

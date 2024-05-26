@@ -9,6 +9,7 @@ const issuesService = require('./issuesService')
 const companyService = require('./companyService')
 const financialYearService = require('./financialYearService')
 const operatorService = require('./operatorService')
+const collectionService = require('./collectionService')
 
 module.exports = {
     headAccService,
@@ -21,5 +22,6 @@ module.exports = {
     issuesService,
     companyService,
     financialYearService,
-    operatorService
+    operatorService,
+    collectionService
 }

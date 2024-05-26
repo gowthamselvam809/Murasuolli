@@ -37,7 +37,7 @@ const fetchMaxIssDate = async (req, res, next) => {
     try {
         let request = req.body;
         let result = await issuesService.fetchMaxIssDate(request);
-        res.send(formatResponse(result));
+        res.status(200).json(formatResponse(result));
     } catch (error) {
         next(error);
     }

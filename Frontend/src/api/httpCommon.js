@@ -51,6 +51,14 @@ axiosInstance.interceptors.request.use(function (config) {
   if (financialDB) {
     config.headers.financial = financialDB;
   }
+  const requestTime = localStorage.getItem('requestTime');
+  if (!!requestTime) {
+    localStorage.setItem('requestTime', parseInt(requestTime) + 1);
+    config.headers.authenticate = parseInt(requestTime) + 1;
+  } else {
+    localStorage.setItem('requestTime', 0);
+    config.headers.authenticate = 0;
+  }
 
   const token = SessionStorage.getItem(SessionStorageKeys.SessionToken);
   config.headers.Authorization = token ? `${token}` : "";

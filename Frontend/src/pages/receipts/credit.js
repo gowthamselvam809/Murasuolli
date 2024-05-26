@@ -4,12 +4,11 @@ import DataTable from '../../components/common/dataTable'
 import { useForm } from 'react-hook-form';
 import { Add, Close } from '@mui/icons-material';
 import Select from 'react-dropdown-select';
-import { fetchAgentForDropdown, fetchAllCollection, fetchBankForDropdown, fetchReasonForDropdown, fetchReceiptNo, fetchVoucherNo, insertCollection, updateCollection } from '../../api/apiRegister';
+import { fetchAgentForDropdown, fetchAllCollection, fetchBankForDropdown, fetchEntryNo, fetchReasonForDropdown, fetchReceiptNo, fetchVoucherNo, insertCollection, updateCollection } from '../../api/apiRegister';
 import { isEmptyArray } from 'formik';
-import { GetDateYYYY_MM_DD } from '../../utils';
 import { dateFormatWithYYYYMMDD } from '../../utils/utils';
 
-const ReceiptsPage = () => {
+const CreditPage = () => {
     const { register, handleSubmit, reset, formState: { errors }, setValue } = useForm();
     const [isAdd, setIsAdd] = useState(false);
     const [received, setReceived] = useState('');
@@ -30,7 +29,7 @@ const ReceiptsPage = () => {
         const response = await fetchAgentForDropdown();
         setAllAgent(response.Items[0]);
 
-        const res = await fetchVoucherNo();
+        const res = await fetchEntryNo({ tranType: 'CN' });
         console.log(res);
         setValue('voucherNo', res.Items[0][0].voucherNo + 1 ?? 1)
         // setChallan(res.Items[0][0].voucherNo + 1 ?? 1);
@@ -45,7 +44,7 @@ const ReceiptsPage = () => {
     }
 
     const fetchCollection = async () => {
-        const response = await fetchAllCollection({ tranType: 'RC' });
+        const response = await fetchAllCollection({ tranType: 'CN' });
         setAllCollection(response?.Items);
     }
     useEffect(() => { fetchCollection() }, [isEdit]);
@@ -91,7 +90,7 @@ const ReceiptsPage = () => {
 
     const handleAgent = async (value) => {
         setAgent(value);
-        const response = await fetchReceiptNo({ partyCode: value[0].value });
+        const response = await await fetchEntryNo({ tranType: 'CN', partyCode: value[0].value });
         console.log(response.Items);
         if (response.Items) {
             console.log("first agent", response.Items[0][0].receiptNo)
@@ -104,10 +103,6 @@ const ReceiptsPage = () => {
     const handleCancel = () => {
         setIsAdd(false);
         setIsEdit(false);
-        setAgent([]);
-        setBank([]);
-        setReason([]);
-        setReceived('')
         reset();
     }
 
@@ -142,7 +137,7 @@ const ReceiptsPage = () => {
             reason: isEmptyArray(reason) ? '' : reason[0].value,
             partyCode: agent[0].value,
             contraCode: received.toUpperCase(),
-            tranType: 'RC'
+            tranType: 'CN'
         })
 
         if (response) {
@@ -152,10 +147,6 @@ const ReceiptsPage = () => {
         }
 
     }
-
-    const handleRadioChange = (event) => {
-        setReceived(event.target.value);
-    };
 
     const handleEdit = (isEdit) => {
         setIsEdit(isEdit);
@@ -191,11 +182,11 @@ const ReceiptsPage = () => {
         <Container className="p-3">
             <Row className="mb-1 px-2">
                 <Col>
-                    <h3>Receipts</h3>
+                    <h3>Credit Entry</h3>
                 </Col>
                 <Col align='right'>{
                     !isAdd ? (<Button variant="primary" size="md" onClick={() => setIsAdd(!isAdd)}>
-                        Add Receipts <Add style={{ marginLeft: '0.1em' }} />
+                        Add Credit <Add style={{ marginLeft: '0.1em' }} />
                     </Button>) : (<Button variant="primary" size="md" onClick={() => handleCancel()}>
                         close<Close style={{ marginLeft: '0.1em' }} />
                     </Button>)
@@ -270,38 +261,6 @@ const ReceiptsPage = () => {
                                 </Form.Group>
                             </Col>)}
                     </Row>
-                    <Row className='mt-4'>
-                        <Col lg={2} xl={2}>
-                            <Form.Label>Received :</Form.Label>
-                        </Col>
-                        <Col lg={4} xl={4}>
-                            <Form.Check
-                                inline
-                                type='radio'
-                                id='Cash'
-                                name='received'
-                                value='CASH'
-                                label='Cash'
-                                checked={received === 'CASH'}
-                                onChange={handleRadioChange}
-                                className='mr-4'
-                            />
-
-                            <Form.Check
-                                inline
-                                type='radio'
-                                id='Bank'
-                                name='received'
-                                value='BANK'
-                                label='Bank'
-                                checked={received === 'BANK'}
-                                onChange={handleRadioChange}
-                            />
-                        </Col>
-                        {!received && selectedOption && <Form.Text className="text-danger">Please select a received</Form.Text>}
-
-
-                    </Row>
                     <Row className='mt-2'>
                         <Col lg={6} xl={6} >
                             <Form.Group controlId='dues' >
@@ -352,4 +311,4 @@ const ReceiptsPage = () => {
     )
 }
 
-export default ReceiptsPage
+export default CreditPage

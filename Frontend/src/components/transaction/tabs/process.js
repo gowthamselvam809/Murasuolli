@@ -11,7 +11,7 @@ const Process = () => {
     const handleClick = async () => {
 
         console.log(date);
-        const response = await insertIssues({ dbName: 'murm2425', issDate: date });
+        const response = await insertIssues({ issDate: date });
         if (response) {
             toast.success("Process Successfully");
             setClicked(true);

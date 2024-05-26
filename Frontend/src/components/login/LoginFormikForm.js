@@ -27,9 +27,8 @@ const LoginFormikForm = ({ operator }) => {
         }
       }
       setSubmitting(false);
-    },
-  });
-
+    }
+  })
   return (
     <div className="formik-conatiner login">
       <label className="label">{labels.LOG_IN}</label>

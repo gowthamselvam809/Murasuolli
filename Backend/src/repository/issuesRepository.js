@@ -1,6 +1,6 @@
 const { where } = require('sequelize');
 const dynamicSequelize = require('../../dynamicSequelize')
-const { getCurrentTimestamp, subtractDays } = require('../helper/util')
+const { getCurrentTimestamp, subtractDays, formatErrorResponse, ensureGetCopiesFunctionExists } = require('../helper/util')
 const { issuesModal } = require('../models')
 
 const fetchAllIssuesBasedOnDates = async (requestData) => {
@@ -27,8 +27,8 @@ const fetchAllIssuesBasedOnDates = async (requestData) => {
       ,'input' [OPERCODE]
       ,'2024-04-05' as [UPDATED]
       ,'input' UPTIME
-  FROM (select * from MURMASTER.dbo.COPYCONFIRM as a where  a.PARTYCODE not in
-  (select partycode from MURMASTER.dbo.CEASED))  as a 
+  FROM (select * from ${requestData.dbName}.dbo.COPYCONFIRM as a where  a.PARTYCODE not in
+  (select partycode from ${requestData.dbName}.dbo.CEASED))  as a 
   `)
 
   // for inserting into the issues
@@ -55,41 +55,41 @@ const fetchAllIssuesBasedOnDates = async (requestData) => {
 }
 
 const fetchMaxIssDate = async (requestData) => {
-  const transactionSequelize = dynamicSequelize(requestData.dbName);
-  return await transactionSequelize.query(`
-   select max(issdate) as maxDate from issues
+  try {
+    const transactionSequelize = await dynamicSequelize(requestData.financial);
+    return await transactionSequelize.query(`
+   select max(issdate) as maxDate from ISSUES
 `);
+  } catch (error) {
+    console.log(error)
+    throw formatErrorResponse(error)
+  }
 }
 
 const fetchEditIssuesByDate = async (requestData) => {
-  const transactionSequelize = dynamicSequelize(requestData.dbName);
-  console.log(subtractDays(requestData.issDate, 1))
-  return await transactionSequelize.query(`
-  select
-      ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS id,
-      partyCode as partyCode,
-      murm2425.dbo.getCopies(:date, partyCode)  as :date,
-      murm2425.dbo.getCopies(:date1, partyCode)  as :date1,
-      murm2425.dbo.getCopies(:date2, partyCode)  as :date2,
-      murm2425.dbo.getCopies(:date3, partyCode)  as Today
-  from issues;
-  `, {
-    replacements: {
-      date: subtractDays(requestData.issDate, 3),
-      date1: subtractDays(requestData.issDate, 2),
-      date2: subtractDays(requestData.issDate, 1),
-      date3: requestData.issDate,
-    }
-  })
+  try {
+    const transactionSequelize = dynamicSequelize(requestData.financial);
+    // console.log(subtractDays(requestData.issDate, 1))
+    await ensureGetCopiesFunctionExists(transactionSequelize, requestData.financial)
+    return await transactionSequelize.query(`
+      select  ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS id, partyCode,dbo.getCopies('${subtractDays(requestData.issDate, 3)}',partycode) as '${subtractDays(requestData.issDate, 3)}',
+      dbo.getCopies('${subtractDays(requestData.issDate, 2)}',partycode) as '${subtractDays(requestData.issDate, 2)}',
+      dbo.getCopies('${subtractDays(requestData.issDate, 1)}',partycode) as '${subtractDays(requestData.issDate, 1)}', 
+      COPIES as Today from ISSUES where ISSDATE='${subtractDays(requestData.issDate, 0)}'
+
+  `)
+  } catch (error) {
+    console.log(error);
+    throw formatErrorResponse(error)
+  }
 }
-// select murm2425.dbo.getCopies('${requestData.issDate}', partyCode) as current from issues;
 
 
 const insertIssues = async (requestData) => {
-  const transactionSequelize = dynamicSequelize(requestData.dbName);
+  const transactionSequelize = dynamicSequelize(requestData.financial);
 
   return await transactionSequelize.query(`
-   insert into MURM2425.dbo.ISSUES  select ROW_NUMBER() OVER (ORDER BY a.[PARTYCODE]) AS 'SNO'
+   insert into ${requestData.financial}.dbo.ISSUES  select ROW_NUMBER() OVER (ORDER BY a.[PARTYCODE]) AS 'SNO'
       ,a.[PARTYCODE]
       ,1 as 'magid'
       ,a.[COMMISSION]
@@ -109,8 +109,8 @@ const insertIssues = async (requestData) => {
       ,'1' [OPERCODE]
       ,:date3 as [UPDATED]
       ,null
-  FROM (select * from MURMASTER.dbo.COPYCONFIRM as s where  s.PARTYCODE not in
-  (select partycode from MURMASTER.dbo.CEASED))  as a inner join MURMASTER.dbo.MAGAZINE as b on a.magid=b.Magid
+  FROM (select * from ${requestData.dbName}.dbo.COPYCONFIRM as s where  s.PARTYCODE not in
+  (select partycode from ${requestData.dbName}.dbo.CEASED))  as a inner join ${requestData.dbName}.dbo.MAGAZINE as b on a.magid=b.Magid
   `, {
     replacements: {
       date: requestData.issDate,
@@ -122,8 +122,7 @@ const insertIssues = async (requestData) => {
 };
 
 const isAlreadyInserted = async (requestData) => {
-  const transactionSequelize = dynamicSequelize(requestData.dbName);
-  return await issuesModal(requestData.dbName).findOne({
+  return await issuesModal(requestData.financial).findOne({
     where: { issDate: requestData.issDate },
     attributes: {
       exclude: ['id']
@@ -133,11 +132,10 @@ const isAlreadyInserted = async (requestData) => {
 }
 
 const fetchIssuesBasedOnDate = async (requestData) => {
-  const transactionSequelize = dynamicSequelize(requestData.dbName);
-  console.log(requestData.issDate)
-  return await issuesModal('murm2425').findAll({
+  const transactionSequelize = dynamicSequelize(requestData.financial);
+  return await issuesModal(requestData.dbName).findAll({
     where: {
-      issDate: requestData.issDate
+      issDate: requestData.issDateP
     },
     attributes: {
       exclude: ['id']
@@ -147,7 +145,7 @@ const fetchIssuesBasedOnDate = async (requestData) => {
 
 const updateIssueCopy = async (requestData) => {
   console.log(requestData);
-  const transactionSequelize = dynamicSequelize(requestData.dbName);
+  const transactionSequelize = dynamicSequelize(requestData.financial);
   return await transactionSequelize.query(`
   update issues set copies = :copies where partyCode = :partyCode AND issDate = :issDate`,
     {

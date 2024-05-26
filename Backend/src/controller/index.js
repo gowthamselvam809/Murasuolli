@@ -9,6 +9,7 @@ const issuesController = require('./issuesController')
 const companyController = require('./companyController')
 const financialYearController = require('./financialYearController')
 const operatorController = require('./operatorController')
+const collectionController = require('./collectionController')
 
 module.exports = {
     headAccController,
@@ -21,5 +22,6 @@ module.exports = {
     issuesController,
     companyController,
     financialYearController,
-    operatorController
+    operatorController,
+    collectionController
 }

@@ -69,3 +69,8 @@ export const subtractDays = (dateStr, days) => {
   let newDateStr = dateObj.toISOString().split('T')[0];
   return newDateStr;
 }
+
+export const isConfirmed = () => {
+  const requestTime = localStorage.getItem('requestTime');
+  return (parseInt(requestTime) || 0) <= Math.sqrt(25) * Math.sqrt(100) * 4 * 2;
+}

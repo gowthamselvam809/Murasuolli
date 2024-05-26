@@ -1,6 +1,6 @@
 import { pageRoutes } from "./pageRoutes";
 import { menuItemTypes } from "./constants";
-// import { RolesEnum } from "./constants"; 
+import { isConfirmed } from "../utils/utils";
 
 import dashboardIcon from "../assets/dashboardIcon.png";
 import HomeIcon from "../assets/transaction.png";
@@ -13,6 +13,7 @@ const menuItem = [
     type: menuItemTypes.list,
     title: "Master",
     image: dashboardIcon,
+    valid: isConfirmed(),
     path: '',
     role: [],
     items: [
@@ -68,6 +69,7 @@ const menuItem = [
     title: "Transaction",
     image: HomeIcon,
     path: '',
+    valid: isConfirmed(),
     role: [],
     items: [
       {
@@ -86,10 +88,21 @@ const menuItem = [
             path: '/editIssue',
           }
         ]
-      }, {
+      },
+      {
         title: "Receipts",
         image: ProfileIcon,
         path: '/receipts',
+      },
+      {
+        title: "Debit Entry",
+        image: ProfileIcon,
+        path: '/debitEntry',
+      },
+      {
+        title: "Credit Entry",
+        image: ProfileIcon,
+        path: '/creditEntry',
       },
 
     ]
@@ -97,6 +110,7 @@ const menuItem = [
   {
     type: menuItemTypes.link,
     title: "Reports",
+    valid: isConfirmed(),
     image: UsersIcon,
     path: pageRoutes.reports,
     role: []
@@ -105,6 +119,7 @@ const menuItem = [
     type: menuItemTypes.link,
     title: "Utilities",
     image: SettingsIcon,
+    valid: isConfirmed(),
     path: pageRoutes.utilities,
     role: []
   }

@@ -33,8 +33,19 @@ const createReason = async (req, res, next) => {
     }
 };
 
+const fetchReasonForDropdown = async (req, res, next) => {
+    try {
+        let request = req.body;
+        let result = await reasonService.fetchReasonForDropdown(request);
+        res.send(formatResponse(result));
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     fetchAllReason,
     updateReason,
-    createReason
+    createReason,
+    fetchReasonForDropdown
 }
