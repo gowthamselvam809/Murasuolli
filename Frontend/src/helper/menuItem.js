@@ -88,7 +88,24 @@ const menuItem = [
             path: '/editIssue',
           }
         ]
+      }, {
+        type: menuItemTypes.list,
+        title: "Supply",
+        path: '',
+        items: [
+          {
+            title: "Process Supply",
+            image: ProfileIcon,
+            path: '/processSupply',
+          },
+          {
+            title: "View Supply",
+            image: ProfileIcon,
+            path: '/viewSupply',
+          }
+        ]
       },
+
       {
         title: "Receipts",
         image: ProfileIcon,
@@ -140,3 +157,4 @@ const menuItem = [
 ]
 
 export { menuItem };
+

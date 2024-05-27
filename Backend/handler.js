@@ -83,6 +83,8 @@ app.post("/fetchVoucherNo", authenticator, collectionController.fetchVoucherNo);
 app.post("/insertCollection", authenticator, collectionController.insertCollection);
 app.post("/updateCollection", authenticator, collectionController.updateCollection);
 app.post("/fetchEntryNo", authenticator, collectionController.fetchEntryNo);
+app.post("/processSupply", authenticator, collectionController.processSupply);
+app.post("/viewSupply", authenticator, collectionController.viewSupply);
 
 app.use(timeout('180s'));
 

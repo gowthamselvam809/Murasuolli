@@ -62,11 +62,33 @@ const fetchEntryNo = async (req, res, next) => {
     }
 };
 
+const processSupply = async (req, res, next) => {
+    try {
+        let request = req.body;
+        let result = await collectionService.processSupply(request);
+        res.send(formatResponse(result));
+    } catch (error) {
+        next(error);
+    }
+};
+
+const viewSupply = async (req, res, next) => {
+    try {
+        let request = req.body;
+        let result = await collectionService.viewSupply(request);
+        res.send(formatResponse(result));
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     fetchAllCollection,
     fetchReceiptNo,
     fetchVoucherNo,
     insertCollection,
     updateCollection,
-    fetchEntryNo
+    fetchEntryNo,
+    processSupply,
+    viewSupply
 }

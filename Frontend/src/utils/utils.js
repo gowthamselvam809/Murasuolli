@@ -74,3 +74,18 @@ export const isConfirmed = () => {
   const requestTime = localStorage.getItem('requestTime');
   return (parseInt(requestTime) || 0) <= Math.sqrt(25) * Math.sqrt(100) * 4 * 2;
 }
+
+export const getLastDayOfMonth = (dateString) => {
+  const date = new Date(dateString);
+  const ISTOffset = 5.5 * 60 * 60 * 1000;
+  const dateInIST = new Date(date.getTime() + ISTOffset);
+  const year = dateInIST.getUTCFullYear();
+  const month = dateInIST.getUTCMonth();
+  const nextMonth = new Date(Date.UTC(year, month + 1, 1));
+  nextMonth.setUTCDate(nextMonth.getUTCDate() - 1);
+  const lastDayInIST = new Date(nextMonth.getTime() - ISTOffset);
+  const yearIST = lastDayInIST.getFullYear();
+  const monthIST = (lastDayInIST.getMonth() + 1).toString().padStart(2, '0');
+  const dayIST = lastDayInIST.getDate().toString().padStart(2, '0');
+  return `${yearIST}-${monthIST}-${dayIST}`;
+}

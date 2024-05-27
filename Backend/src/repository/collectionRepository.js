@@ -1,5 +1,5 @@
 const sequelize = require('../../dynamicSequelize');
-const { getCurrentTimestamp } = require('../helper/util')
+const { getCurrentTimestamp, insertBillFunc, ensureBulkInsertBillProcedureExists, formatDateWithShortMonthDayAndYear } = require('../helper/util')
 const { collectionModal } = require('../models')
 
 
@@ -8,11 +8,13 @@ const fetchAllCollection = async (requestData) => {
     attributes: ['partyCode', 'docNo', 'voucherNo', 'contraCode', 'docDate', 'dues', 'deposit', 'upTime', 'bankDet', 'reason', 'amount'],
     where: { tranType: requestData.tranType },
     raw: true,
+    order: [['docDate', 'DESC']]
   });
 
   return results.map((item, index) => ({
     ...item,
-    id: index + 1
+    id: index + 1,
+    date: formatDateWithShortMonthDayAndYear(item.docDate)
   }));
 };
 
@@ -91,11 +93,33 @@ const updateCollection = async (requestData) => {
   });
 };
 
+const processSupply = async (requestData, month, year) => {
+  const dynamicSequelize = sequelize(requestData.financial);
+  await ensureBulkInsertBillProcedureExists(dynamicSequelize, requestData.financial);
+  return dynamicSequelize.query(`exec dbo.BulkInsertBill '${requestData.date}' , '${month}','${year}'`)
+}
+
+const viewSupply = async (requestData, month, year) => {
+  const dynamicSequelize = sequelize(requestData.financial);
+  return dynamicSequelize.query(`
+    SELECT * from (select partycode,'D'+RIGHT('00' + CAST(DATEPART(dd, ISSDATE) AS varchar(2)), 2) as dayx,isnull(copies,0) as copies FROM ISSUES  
+    where year(issdate)=${year} and month(issdate)=${month}) as a inner join (select PARTYCODE as psumm,sum(copies*rate) as dues, sum((copies*rate)*(commission/100)) as comsn, 
+     ROW_NUMBER() OVER (ORDER BY partycode) AS id from issues
+      where year(issdate)=${year} and month(issdate)=${month} group by PARTYCODE) as b on a.PARTYCODE=b.psumm                    
+    pivot
+    (sum(a.copies) for dayx in ( D01,D02,D03,D04,D05,D06,D07,D08,D09,D10,D11,
+    D12,D13,D14,D15,D16,D17,D18,D19,D20,D21,D22,D23,D24,D25,D26,D27,D28,D29,D30,D31
+    )) as pt
+    `)
+}
+
 module.exports = {
   fetchAllCollection,
   fetchReceiptNo,
   fetchVoucherNo,
   insertCollection,
   updateCollection,
-  fetchEntryNo
+  fetchEntryNo,
+  processSupply,
+  viewSupply
 }

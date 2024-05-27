@@ -171,9 +171,10 @@ const ReceiptsPage = () => {
     const columns = [
         // { field: 'id', headerName: 'S.No.', width: 100, renderCell: (params) => params.row.id },
         { field: 'id', headerName: 'S.No.', width: 100 },
+        { field: 'date', headerName: 'Receipt Date', width: 200 },
         { field: 'partyCode', headerName: 'Agent Code', width: 120 },
-        { field: 'docNo', headerName: 'Receipt No', width: 200 },
-        { field: 'dues', headerName: 'Dues', width: 200 },
+        { field: 'docNo', headerName: 'Receipt No', width: 100 },
+        { field: 'dues', headerName: 'Dues', width: 100 },
         { field: 'deposit', headerName: 'Deposit', width: 100 },
         {
             headerName: 'Actions',

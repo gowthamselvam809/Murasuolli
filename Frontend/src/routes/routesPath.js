@@ -18,6 +18,8 @@ import EditIssue from "../pages/process/editProcessPage";
 import ReceiptsPage from "../pages/receipts";
 import DebitPage from "../pages/receipts/debit";
 import CreditPage from "../pages/receipts/credit";
+import SupplyProcess from "../pages/supply/process";
+import SupplyView from "../pages/supply/viewSupply";
 
 export const routerData = [
   {
@@ -79,6 +81,18 @@ export const routerData = [
     exact: false,
     layOut: true,
     element: <Commission />
+  },
+  {
+    path: '/processSupply',
+    exact: false,
+    layOut: true,
+    element: <SupplyProcess />
+  },
+  {
+    path: '/viewSupply',
+    exact: false,
+    layOut: true,
+    element: <SupplyView />
   },
   {
     path: '/operator',

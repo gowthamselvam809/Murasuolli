@@ -415,3 +415,65 @@ exports.ensureGetCopiesFunctionExists = async (sequelize, dbName) => {
         throw error;
     }
 }
+exports.ensureBulkInsertBillProcedureExists = async (sequelize, dbName) => {
+    const checkAndDropProcedureQuery = `
+        IF OBJECT_ID('[dbo].[BulkInsertBill]', 'P') IS NOT NULL
+        BEGIN
+            DROP PROCEDURE [dbo].[BulkInsertBill];
+        END;
+    `;
+
+    const createProcedureQuery = `
+        CREATE PROCEDURE [dbo].[BulkInsertBill]
+            @rdate AS char(10),
+            @mth as int,
+            @yr int
+        AS
+        BEGIN
+            DECLARE @party char(5),
+                    @id bigint,
+                    @copies int,
+                    @dues decimal,
+                    @comsn decimal;
+
+            DECLARE MY_data CURSOR FOR
+            SELECT
+                partycode,
+                (SELECT ISNULL(MAX(voucherno), 0) + 1 FROM collection WHERE trantype='IS'),
+                SUM(copies),
+                SUM(copies * rate),
+                SUM((copies * rate) * (commission / 100))
+            FROM ISSUES
+            WHERE YEAR(issdate) = @yr AND MONTH(issdate) = @mth
+            GROUP BY PARTYCODE;
+
+            OPEN MY_data;
+
+            FETCH NEXT FROM MY_data INTO @party, @Id, @copies, @dues, @comsn;
+
+            WHILE @@FETCH_STATUS = 0
+            BEGIN
+                INSERT INTO Collection (partycode, docdate, docno, copies, trantype, dues, commission)
+                VALUES (@party, @rdate, (SELECT ISNULL(MAX(voucherno), 0) + 1 FROM collection WHERE trantype='IS'), @copies, 'IS', @dues, @comsn);
+
+                FETCH NEXT FROM MY_data INTO @party, @Id, @copies, @dues, @comsn;
+            END;
+
+            CLOSE MY_data;
+            DEALLOCATE MY_data;
+        END;
+    `;
+
+    try {
+        // First execute the check and drop procedure if it exists
+        await sequelize.query(checkAndDropProcedureQuery);
+        console.log(`Checked and dropped existing BulkInsertBill procedure if it existed in ${dbName}`);
+
+        // Then execute the create procedure
+        await sequelize.query(createProcedureQuery);
+        console.log(`Ensured that BulkInsertBill procedure exists in ${dbName}`);
+    } catch (error) {
+        console.error('Error ensuring BulkInsertBill procedure exists:', error);
+        throw error;
+    }
+};

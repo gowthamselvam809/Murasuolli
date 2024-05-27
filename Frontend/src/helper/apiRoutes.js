@@ -64,6 +64,8 @@ const apiRoutes = {
   insertCollection: "/insertCollection",
   updateCollection: "/updateCollection",
   fetchEntryNo: "/fetchEntryNo",
+  processSupply: "/processSupply",
+  viewSupply: "/viewSupply",
 }
 
 export { Url, apiRoutes };

@@ -162,20 +162,21 @@ const DebitPage = () => {
     const columns = [
         // { field: 'id', headerName: 'S.No.', width: 100, renderCell: (params) => params.row.id },
         { field: 'id', headerName: 'S.No.', width: 100 },
+        { field: 'date', headerName: 'Receipt Date', width: 200 },
         { field: 'partyCode', headerName: 'Agent Code', width: 120 },
-        { field: 'docNo', headerName: 'Receipt No', width: 200 },
-        { field: 'dues', headerName: 'Dues', width: 200 },
+        { field: 'docNo', headerName: 'Receipt No', width: 100 },
+        { field: 'dues', headerName: 'Dues', width: 100 },
         { field: 'amount', headerName: 'Amount', width: 100 },
-        {
-            headerName: 'Actions',
-            width: 150,
-            renderCell: (params) => (
-                <div>
-                    <Button variant="info" className="mx-2" size="sm" onClick={() => handleEdit(params.row)}>Edit</Button>{'  '}
-                    {/* <Button variant="danger" size="sm" onClick={() => handleDelete(params.row)}>View</Button> */}
-                </div>
-            ),
-        },
+        // {
+        //     headerName: 'Actions',
+        //     width: 150,
+        //     renderCell: (params) => (
+        //         <div>
+        //             <Button variant="info" className="mx-2" size="sm" onClick={() => handleEdit(params.row)}>Edit</Button>{'  '}
+        //             {/* <Button variant="danger" size="sm" onClick={() => handleDelete(params.row)}>View</Button> */}
+        //         </div>
+        //     ),
+        // },
     ];
 
     return (
@@ -184,13 +185,13 @@ const DebitPage = () => {
                 <Col>
                     <h3>Debit Entry</h3>
                 </Col>
-                <Col align='right'>{
+                {/* <Col align='right'>{
                     !isAdd ? (<Button variant="primary" size="md" onClick={() => setIsAdd(!isAdd)}>
                         Add Debit <Add style={{ marginLeft: '0.1em' }} />
                     </Button>) : (<Button variant="primary" size="md" onClick={() => handleCancel()}>
                         close<Close style={{ marginLeft: '0.1em' }} />
                     </Button>)
-                }</Col>
+                }</Col> */}
             </Row>
             {!isAdd ? <DataTable column={columns} row={allCollection} /> : (
                 <Form className='login_form p-2' onSubmit={handleSubmit(onSubmit)}>

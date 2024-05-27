@@ -12,7 +12,9 @@ const DataTable = ({ column, row }) => {
                 rows={rows}
                 columns={column}
                 pageSize={25}
+                pagination="auto"
                 slots={{ toolbar: GridToolbar }}
+                rowsPerPageOptions={[500, 1000, 2000]}
                 slotProps={{
                     toolbar: {
                         showQuickFilter: true,

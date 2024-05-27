@@ -60,7 +60,7 @@ const CompanyForm = ({ setIsCompanySelected, setOperator }) => {
                                 onChange={async (value) => {
                                     setSelectedCompany(value);
                                     console.log(value[0].value)
-                                    localStorage.setItem('prefix', value[0].value);
+                                    sessionStorage.setItem('prefix', value[0].value);
                                     const response = await fetchAllFinancialYear();
                                     if (response) {
                                         setFinancial(response?.Items);
@@ -82,7 +82,7 @@ const CompanyForm = ({ setIsCompanySelected, setOperator }) => {
                                 onChange={(value) => {
                                     setSelectedFinancial(value);
                                     console.log(value[0].value)
-                                    localStorage.setItem('financialDB', value[0].value);
+                                    sessionStorage.setItem('financialDB', value[0].value);
 
                                 }}
                                 placeholder="Select a Financial"

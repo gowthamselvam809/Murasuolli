@@ -22,7 +22,7 @@ const LoginFormikForm = ({ operator }) => {
         const res = await userLogin(values);
         if (res) {
           console.log("res", res)
-          localStorage.setItem('user', res.Items);
+          sessionStorage.setItem('user', res.Items);
           navigate('/states');
         }
       }

@@ -42,11 +42,11 @@ axiosInstance.interceptors.request.use(function (config) {
   // Do something before request is sent
   // config.headers.test = 'I am only a header!'; // EX: Add jwt token
   // console.log("config",config);
-  const prefix = localStorage.getItem('prefix');
+  const prefix = sessionStorage.getItem('prefix');
   if (prefix) {
     config.headers.database = prefix + 'master';
   }
-  const financialDB = localStorage.getItem('financialDB');
+  const financialDB = sessionStorage.getItem('financialDB');
 
   if (financialDB) {
     config.headers.financial = financialDB;
