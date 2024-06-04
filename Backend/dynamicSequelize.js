@@ -3,13 +3,13 @@ const { Sequelize } = require('sequelize');
 const initializeSequelize = (databaseName) => {
     console.log(`Initializing Sequelize for database: ${databaseName}`);
     const sequelize = new Sequelize(databaseName, 'sa', 'sa123', {
-        host: 'DELL',
+        host: 'PC',
         dialect: 'mssql',
         dialectOptions: {
             options: {
                 encrypt: true,
                 trustServerCertificate: true,
-                requestTimeout: 60000
+                requestTimeout: 60000,
             }
         },
 

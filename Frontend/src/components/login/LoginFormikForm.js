@@ -17,11 +17,9 @@ const LoginFormikForm = ({ operator }) => {
     },
     validationSchema: SignupFormSchema,
     onSubmit: async (values, { setSubmitting }) => {
-      console.log("first------");
       if (values) {
         const res = await userLogin(values);
         if (res) {
-          console.log("res", res)
           sessionStorage.setItem('user', res.Items);
           navigate('/states');
         }
@@ -41,7 +39,7 @@ const LoginFormikForm = ({ operator }) => {
             options={operator}
             placeholder="Select a State"
             value={formik.values.operator}
-            onChange={(value) => formik.setFieldValue("operator", value[0].value)}
+            onChange={(value) => { formik.setFieldValue("operator", value[0].value); sessionStorage.setItem('userName', value[0].label) }}
           />
           {formik.touched.operator && formik.errors.operator && (
             <div className="error-field  text-danger">{formik.errors.operator}</div>

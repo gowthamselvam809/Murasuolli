@@ -91,12 +91,14 @@ const ReceiptsPage = () => {
 
     const handleAgent = async (value) => {
         setAgent(value);
-        const response = await fetchReceiptNo({ partyCode: value[0].value });
-        console.log(response.Items);
-        if (response.Items) {
-            console.log("first agent", response.Items[0][0].receiptNo)
-            setValue('docNo', response.Items[0][0].receiptNo + 1 ?? 1);
-            // setReceiptNo(response.Items[0][0].receiptNo + 1 ?? 1);
+        if (!isEdit) {
+            const response = await fetchReceiptNo({ partyCode: value[0].value });
+            console.log(response.Items);
+            if (response.Items) {
+                console.log("first agent", response.Items[0][0].receiptNo)
+                setValue('docNo', response.Items[0][0].receiptNo + 1 ?? 1);
+                // setReceiptNo(response.Items[0][0].receiptNo + 1 ?? 1);
+            }
         }
 
     }
@@ -251,6 +253,7 @@ const ReceiptsPage = () => {
                                     options={allAgent}
                                     onChange={(value) => handleAgent(value)}
                                     values={agent}
+                                    disabled={isEdit}
                                     placeholder="Select a Agent"
                                 />
                                 {!selectedOption && isEmptyArray(agent) && <Form.Text className="text-danger">Please select a partyCode</Form.Text>}

@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../../dynamicSequelize')('AdventureWorks2022');
+const sequelize = require('../../dynamicSequelize')('MZCompany');
 
 
 const companyModal = sequelize.define('company', {

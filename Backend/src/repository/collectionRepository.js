@@ -5,7 +5,7 @@ const { collectionModal } = require('../models')
 
 const fetchAllCollection = async (requestData) => {
   const results = await collectionModal(requestData.financial).findAll({
-    attributes: ['partyCode', 'docNo', 'voucherNo', 'contraCode', 'docDate', 'dues', 'deposit', 'upTime', 'bankDet', 'reason', 'amount'],
+    attributes: ['partyCode', 'docNo', 'voucherNo', 'contraCode', 'docDate', 'dues', 'deposit', 'upTime', 'bankDet', 'reason', 'amount', 'remark1'],
     where: { tranType: requestData.tranType },
     raw: true,
     order: [['docDate', 'DESC']]
@@ -34,6 +34,7 @@ const fetchEntryNo = async (requestData) => {
     select max(voucherNo) as voucherNo from Collection where tranType = '${requestData.tranType}'
   `)
 }
+
 const insertCollection = async (requestData) => {
   const dynamicSequelize = sequelize(requestData.financial);
   await dynamicSequelize.query(`
@@ -57,8 +58,29 @@ const insertCollection = async (requestData) => {
   });
 };
 
+const insertCreditDebitCollection = async (requestData) => {
+  const dynamicSequelize = sequelize(requestData.financial);
+  await dynamicSequelize.query(`
+        INSERT INTO collection (partyCode, docNo, updated, docDate, reason,remark1, amount,dues,deposit, tranType)
+        VALUES (:partyCode, :docNo, :updated, :docDate,:reason, :remark1, :amount,:amount, :amount,  :tranType)
+    `, {
+    replacements: {
+      partyCode: requestData.partyCode ? requestData.partyCode.toUpperCase() : null,
+      docNo: requestData.docNo,
+      updated: getCurrentTimestamp(),
+      docDate: requestData.docDate ? requestData.docDate.toUpperCase() : null,
+      reason: requestData.reason,
+      remark1: requestData.remark1,
+      amount: requestData.amount,
+      tranType: requestData.tranType ? requestData.tranType.toUpperCase() : null,
+    },
+    type: dynamicSequelize.QueryTypes.INSERT
+  });
+};
+
 const updateCollection = async (requestData) => {
   const dynamicSequelize = sequelize(requestData.financial);
+  console.log(requestData.dues)
   await dynamicSequelize.query(`
         UPDATE collection
         SET
@@ -93,6 +115,34 @@ const updateCollection = async (requestData) => {
   });
 };
 
+const updateCreditDebitCollection = async (requestData) => {
+  const dynamicSequelize = sequelize(requestData.financial);
+  await dynamicSequelize.query(`
+        UPDATE collection
+        SET
+            updated = :updated,
+            docDate = :docDate,
+            reason = :reason,
+            amount = :amount,
+            bankDet = :bankDet,
+            reason = :reason,
+            remark1 = :remark1
+        WHERE
+            docNo = :docNo AND partyCode = :partyCode AND transType = :transType
+    `, {
+    replacements: {
+      partyCode: requestData.partyCode ? requestData.partyCode.toUpperCase() : null,
+      updated: getCurrentTimestamp(),
+      docDate: requestData.docDate ? requestData.docDate.toUpperCase() : null,
+      reason: requestData.reason,
+      remark1: requestData.remark1,
+      amount: requestData.amount,
+      tranType: requestData.tranType,
+    },
+    type: dynamicSequelize.QueryTypes.UPDATE
+  });
+};
+
 const processSupply = async (requestData, month, year) => {
   const dynamicSequelize = sequelize(requestData.financial);
   await ensureBulkInsertBillProcedureExists(dynamicSequelize, requestData.financial);
@@ -121,5 +171,7 @@ module.exports = {
   updateCollection,
   fetchEntryNo,
   processSupply,
-  viewSupply
+  viewSupply,
+  updateCreditDebitCollection,
+  insertCreditDebitCollection
 }

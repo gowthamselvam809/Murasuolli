@@ -52,6 +52,17 @@ const updateCollection = async (req, res, next) => {
         next(error);
     }
 };
+
+const updateCreditDebitCollection = async (req, res, next) => {
+    try {
+        let request = req.body;
+        let result = await collectionService.updateCreditDebitCollection(request);
+        res.send(formatResponse(result));
+    } catch (error) {
+        next(error);
+    }
+};
+
 const fetchEntryNo = async (req, res, next) => {
     try {
         let request = req.body;
@@ -82,6 +93,16 @@ const viewSupply = async (req, res, next) => {
     }
 };
 
+const insertCreditDebitCollection = async (req, res, next) => {
+    try {
+        let request = req.body;
+        let result = await collectionService.insertCreditDebitCollection(request);
+        res.send(formatResponse(result));
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     fetchAllCollection,
     fetchReceiptNo,
@@ -90,5 +111,7 @@ module.exports = {
     updateCollection,
     fetchEntryNo,
     processSupply,
-    viewSupply
+    viewSupply,
+    updateCreditDebitCollection,
+    insertCreditDebitCollection
 }

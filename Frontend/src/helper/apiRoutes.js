@@ -59,6 +59,7 @@ const apiRoutes = {
   fetchAllCollection: "/fetchAllCollection",
   fetchReceiptNo: "/fetchReceiptNo",
   fetchVoucherNo: "/fetchVoucherNo",
+  fetchReceiptNoWithPartyCode: "/fetchReceiptNoWithPartyCode",
   fetchBankForDropdown: "/fetchBankForDropdown",
   fetchReasonForDropdown: "/fetchReasonForDropdown",
   insertCollection: "/insertCollection",
@@ -66,6 +67,8 @@ const apiRoutes = {
   fetchEntryNo: "/fetchEntryNo",
   processSupply: "/processSupply",
   viewSupply: "/viewSupply",
+  updateCreditDebitCollection: "/updateCreditDebitCollection",
+  insertCreditDebitCollection: "/insertCreditDebitCollection",
 }
 
 export { Url, apiRoutes };

@@ -32,13 +32,18 @@ const TopNavBar = () => {
 
   return (
     <div className="top-nav__container">
-      <div className="notification" onClick={() => setAlert(!alert)}>
+      <div className="notification">
+        <div style={{ fontWeight: 'bold' }}>{sessionStorage.getItem('prefix') + 'MASTER'}</div>
         {/* {count.length > 0 && <span className="notification_count"></span>}
         <img alt="profile" className="bell-img" src={BellIocn} /> */}
         {/* {alert && <img src={NotificationRedAlertIcon} alt="" className="notification__alert" />} */}
       </div>
+      <div style={{ fontWeight: 'bold' }}>{sessionStorage.getItem('financialName')}</div>
       {/* <img alt="profileIcon" className="profile-img" src={profile} onClick={() => { navigate(pageRoutes.profile) }} /> */}
-      <img alt="profileIcon" className="profile-img" src={profile} />
+      <div className="d-flex flex-direction-row gap-2 align-items-center">
+        <span className="" style={{ fontWeight: 'bold' }}>{sessionStorage.getItem('userName')}</span>
+        <img alt="profileIcon" className="profile-img" src={profile} />
+      </div>
     </div>
   )
 }

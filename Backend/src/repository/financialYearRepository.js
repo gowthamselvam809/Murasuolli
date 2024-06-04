@@ -1,4 +1,4 @@
-const sequelize = require('../../dynamicSequelize')('AdventureWorks2022');
+// const sequelize = require('../../dynamicSequelize')('MZCompany');
 const { getCurrentTimestamp } = require('../helper/util')
 const { financialYearModal } = require('../models')
 

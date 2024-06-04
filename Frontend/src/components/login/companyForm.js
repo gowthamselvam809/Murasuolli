@@ -81,9 +81,8 @@ const CompanyForm = ({ setIsCompanySelected, setOperator }) => {
                                 dropdownHeight="200px"
                                 onChange={(value) => {
                                     setSelectedFinancial(value);
-                                    console.log(value[0].value)
                                     sessionStorage.setItem('financialDB', value[0].value);
-
+                                    sessionStorage.setItem('financialName', value[0].label);
                                 }}
                                 placeholder="Select a Financial"
 

@@ -22,6 +22,14 @@ const updateCollection = async (request) => {
     return await collectionRepository.updateCollection(request);
 }
 
+const updateCreditDebitCollection = async (request) => {
+    return await collectionRepository.updateCreditDebitCollection(request);
+}
+
+const insertCreditDebitCollection = async (request) => {
+    return await collectionRepository.insertCreditDebitCollection(request);
+}
+
 const fetchEntryNo = async (request) => {
     return await collectionRepository.fetchEntryNo(request);
 }
@@ -52,6 +60,8 @@ module.exports = {
     fetchVoucherNo,
     insertCollection,
     updateCollection,
+    updateCreditDebitCollection,
+    insertCreditDebitCollection,
     fetchEntryNo,
     viewSupply,
     processSupply

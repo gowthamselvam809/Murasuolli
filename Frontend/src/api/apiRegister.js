@@ -46,6 +46,7 @@ export const fetchAllOperator = async (data) => (await apiClient.postAPICall(api
 export const fetchAgentForDropdown = async (data) => (await apiClient.postAPICall(apiRoutes.fetchAgentForDropdown, data))?.data;
 export const fetchAllCollection = async (data) => (await apiClient.postAPICall(apiRoutes.fetchAllCollection, data))?.data;
 export const fetchReceiptNo = async (data) => (await apiClient.postAPICall(apiRoutes.fetchReceiptNo, data))?.data;
+export const fetchReceiptNoWithPartyCode = async (data) => (await apiClient.postAPICall(apiRoutes.fetchReceiptNoWithPartyCode, data))?.data;
 export const fetchVoucherNo = async (data) => (await apiClient.postAPICall(apiRoutes.fetchVoucherNo, data))?.data;
 export const fetchBankForDropdown = async (data) => (await apiClient.postAPICall(apiRoutes.fetchBankForDropdown, data))?.data;
 export const fetchReasonForDropdown = async (data) => (await apiClient.postAPICall(apiRoutes.fetchReasonForDropdown, data))?.data;
@@ -54,6 +55,8 @@ export const updateCollection = async (data) => (await apiClient.postAPICall(api
 export const fetchEntryNo = async (data) => (await apiClient.postAPICall(apiRoutes.fetchEntryNo, data))?.data;
 export const processSupply = async (data) => (await apiClient.postAPICall(apiRoutes.processSupply, data))?.data;
 export const viewSupply = async (data) => (await apiClient.postAPICall(apiRoutes.viewSupply, data))?.data;
+export const insertCreditDebitCollection = async (data) => (await apiClient.postAPICall(apiRoutes.insertCreditDebitCollection, data))?.data;
+export const updateCreditDebitCollection = async (data) => (await apiClient.postAPICall(apiRoutes.updateCreditDebitCollection, data))?.data;
 
 export const getAllUsers = async (data) => (await apiClient.postAPICall(apiRoutes.getAllUsers, data))?.data;
 export const deleteUser = async (data) => (await apiClient.postAPICall(apiRoutes.deleteUser, data))?.data;

@@ -82,6 +82,8 @@ app.post("/fetchReceiptNo", authenticator, collectionController.fetchReceiptNo);
 app.post("/fetchVoucherNo", authenticator, collectionController.fetchVoucherNo);
 app.post("/insertCollection", authenticator, collectionController.insertCollection);
 app.post("/updateCollection", authenticator, collectionController.updateCollection);
+app.post("/updateCreditDebitCollection", authenticator, collectionController.updateCreditDebitCollection);
+app.post("/insertCreditDebitCollection", authenticator, collectionController.insertCreditDebitCollection);
 app.post("/fetchEntryNo", authenticator, collectionController.fetchEntryNo);
 app.post("/processSupply", authenticator, collectionController.processSupply);
 app.post("/viewSupply", authenticator, collectionController.viewSupply);
