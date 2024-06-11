@@ -24,6 +24,8 @@ const DebitPage = () => {
     // const [challan, setChallan] = useState('');
     // const [receiptNo, setReceiptNo] = useState('');
     const [selectedOption, setSelectedOption] = useState(false);
+    const [currentDate, setCurrentDate] = useState('');
+
 
     const fetchAgent = async () => {
         const response = await fetchAgentForDropdown();
@@ -54,6 +56,13 @@ const DebitPage = () => {
             setValue('voucherNo', allCollection?.length)
         }
     }, [isAdd])
+
+    useEffect(() => {
+        if (isAdd && !isEdit) {
+            const today = new Date().toISOString().split('T')[0];
+            setCurrentDate(today);
+        }
+    }, [isAdd, isEdit]);
 
     useEffect(() => {
         fetchAgent();
@@ -181,7 +190,12 @@ const DebitPage = () => {
             ),
         },
     ];
-
+    const handleInput = (event) => {
+        const { value } = event.target;
+        if (/[^0-9]/.test(value)) {
+            event.target.value = value.replace(/[^0-9]/g, '');
+        }
+    };
     return (
         <Container className="p-3">
             <Row className="mb-1 px-2">
@@ -217,7 +231,9 @@ const DebitPage = () => {
                         <Col lg={4} xl={4}>
                             <Form.Group controlId='docDate' >
                                 <Form.Label>Receipt Date</Form.Label>
-                                <Form.Control className='login_form_group' disabled={isEdit} type='date' placeholder='Enter Reason Code' {...register('docDate', { required: 'Reason Code is required' })} />
+                                <Form.Control className='login_form_group'
+                                    defaultValue={currentDate}
+                                    disabled={isEdit} type='date' placeholder='Enter Reason Code' {...register('docDate', { required: 'Reason Code is required' })} />
                                 {errors.docDate && <Form.Text className="text-danger">{errors.docDate.message}</Form.Text>}
                             </Form.Group>
                         </Col>
@@ -270,7 +286,10 @@ const DebitPage = () => {
                         <Col lg={6} xl={6} >
                             <Form.Group controlId='amount' >
                                 <Form.Label>Amount</Form.Label>
-                                <Form.Control className='login_form_group' type='text' placeholder='Enter Reason Name' {...register('amount', { required: 'Reason Name is required' })} />
+                                <Form.Control className='login_form_group'
+                                    type='text'
+                                    onInput={handleInput}
+                                    placeholder='Enter Amount' {...register('amount', { required: 'Amount is required' })} />
                                 {errors.amount && <Form.Text className="text-danger">{errors.amount.message}</Form.Text>}
                             </Form.Group>
                         </Col>
@@ -292,7 +311,7 @@ const DebitPage = () => {
                                     dropdownPosition='top'
                                     values={reason}
                                     onChange={(value) => setReason(value)}
-                                    placeholder="Select a Bank"
+                                    placeholder="Select a Remarks"
                                 />
                                 {errors.reasonName && <Form.Text className="text-danger">{errors.reasonName.message}</Form.Text>}
                             </Form.Group>
@@ -300,7 +319,7 @@ const DebitPage = () => {
                         <Col lg={6} xl={6}>
                             <Form.Group controlId='remark1' >
                                 <Form.Label>Reason</Form.Label>
-                                <Form.Control className='login_form_group' as="textarea" placeholder='Enter remarks Name' {...register('remark1', { required: 'Reason is required' })} />
+                                <Form.Control className='login_form_group' as="textarea" placeholder='Enter Reason ' {...register('remark1', { required: 'Reason is required' })} />
                             </Form.Group>
                         </Col>
                     </Row>

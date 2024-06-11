@@ -37,7 +37,7 @@ const fetchEntryNo = async (requestData) => {
 
 const insertCollection = async (requestData) => {
   const dynamicSequelize = sequelize(requestData.financial);
-  await dynamicSequelize.query(`
+  return await dynamicSequelize.query(`
         INSERT INTO collection (partyCode, docNo, voucherNo, contraCode, updated, docDate,reason , dues, deposit, tranType, bankDet)
         VALUES (:partyCode, :docNo, :voucherNo, :contraCode, :updated, :docDate,:reason,  :dues, :deposit, :tranType, :bankDet)
     `, {
@@ -60,7 +60,7 @@ const insertCollection = async (requestData) => {
 
 const insertCreditDebitCollection = async (requestData) => {
   const dynamicSequelize = sequelize(requestData.financial);
-  await dynamicSequelize.query(`
+  return await dynamicSequelize.query(`
         INSERT INTO collection (partyCode, docNo, updated, docDate, reason,remark1, amount,dues,deposit, tranType)
         VALUES (:partyCode, :docNo, :updated, :docDate,:reason, :remark1, :amount,:amount, :amount,  :tranType)
     `, {
@@ -80,8 +80,7 @@ const insertCreditDebitCollection = async (requestData) => {
 
 const updateCollection = async (requestData) => {
   const dynamicSequelize = sequelize(requestData.financial);
-  console.log(requestData.dues)
-  await dynamicSequelize.query(`
+  return await dynamicSequelize.query(`
         UPDATE collection
         SET
             partyCode = :partyCode,
@@ -117,18 +116,16 @@ const updateCollection = async (requestData) => {
 
 const updateCreditDebitCollection = async (requestData) => {
   const dynamicSequelize = sequelize(requestData.financial);
-  await dynamicSequelize.query(`
+  return await dynamicSequelize.query(`
         UPDATE collection
         SET
             updated = :updated,
             docDate = :docDate,
             reason = :reason,
             amount = :amount,
-            bankDet = :bankDet,
-            reason = :reason,
             remark1 = :remark1
         WHERE
-            docNo = :docNo AND partyCode = :partyCode AND transType = :transType
+            docNo = :docNo AND partyCode = :partyCode AND tranType = :tranType
     `, {
     replacements: {
       partyCode: requestData.partyCode ? requestData.partyCode.toUpperCase() : null,
@@ -136,6 +133,7 @@ const updateCreditDebitCollection = async (requestData) => {
       docDate: requestData.docDate ? requestData.docDate.toUpperCase() : null,
       reason: requestData.reason,
       remark1: requestData.remark1,
+      docNo: requestData.docNo,
       amount: requestData.amount,
       tranType: requestData.tranType,
     },

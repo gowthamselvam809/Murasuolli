@@ -22,6 +22,8 @@ const ReceiptsPage = () => {
     const [reason, setReason] = useState([]);
     const [agent, setAgent] = useState([]);
     const [bank, setBank] = useState([]);
+    const [currentDate, setCurrentDate] = useState('');
+
     // const [challan, setChallan] = useState('');
     // const [receiptNo, setReceiptNo] = useState('');
     const [selectedOption, setSelectedOption] = useState(false);
@@ -48,7 +50,7 @@ const ReceiptsPage = () => {
         const response = await fetchAllCollection({ tranType: 'RC' });
         setAllCollection(response?.Items);
     }
-    useEffect(() => { fetchCollection() }, [isEdit]);
+    useEffect(() => { fetchCollection() }, [isEdit, isAdd]);
 
     useEffect(() => {
         if (isAdd && !isEdit) {
@@ -88,6 +90,13 @@ const ReceiptsPage = () => {
 
         }
     }, [isEdit, setValue])
+
+    useEffect(() => {
+        if (isAdd && !isEdit) {
+            const today = new Date().toISOString().split('T')[0];
+            setCurrentDate(today);
+        }
+    }, [isAdd, isEdit]);
 
     const handleAgent = async (value) => {
         setAgent(value);
@@ -164,10 +173,17 @@ const ReceiptsPage = () => {
         setIsAdd(true);
     }
 
-    // const handleDelete = (data) => { 
+    // const handleDelete = (data) => {
     //     setIsView(true);
     //     setIsAdd(false);
     // }
+
+    const handleInput = (event) => {
+        const { value } = event.target;
+        if (/[^0-9]/.test(value)) {
+            event.target.value = value.replace(/[^0-9]/g, '');
+        }
+    };
 
 
     const columns = [
@@ -225,7 +241,9 @@ const ReceiptsPage = () => {
                         <Col lg={4} xl={4}>
                             <Form.Group controlId='docDate' >
                                 <Form.Label>Receipt Date</Form.Label>
-                                <Form.Control className='login_form_group' disabled={isEdit} type='date' placeholder='Enter Reason Code' {...register('docDate', { required: 'Reason Code is required' })} />
+                                <Form.Control className='login_form_group' disabled={isEdit}
+                                    defaultValue={currentDate}
+                                    type='date' placeholder='Enter Receipt Date' {...register('docDate', { required: 'Receipt Date is required' })} />
                                 {errors.docDate && <Form.Text className="text-danger">{errors.docDate.message}</Form.Text>}
                             </Form.Group>
                         </Col>
@@ -310,14 +328,28 @@ const ReceiptsPage = () => {
                         <Col lg={6} xl={6} >
                             <Form.Group controlId='dues' >
                                 <Form.Label>Dues</Form.Label>
-                                <Form.Control className='login_form_group' type='text' placeholder='Enter Reason Name' {...register('dues', { required: 'Reason Name is required' })} />
+                                <Form.Control className='login_form_group'
+                                    onInput={handleInput}
+                                    type='text' placeholder='Enter Dues' {...register('dues', {
+                                        required: 'Dues is required', pattern: {
+                                            value: /^[0-9]+$/,
+                                            message: 'Only numbers are allowed'
+                                        }
+                                    })} />
                                 {errors.dues && <Form.Text className="text-danger">{errors.dues.message}</Form.Text>}
                             </Form.Group>
                         </Col>
                         <Col lg={6} xl={6} >
                             <Form.Group controlId='deposit' >
                                 <Form.Label>Deposit</Form.Label>
-                                <Form.Control className='login_form_group' type='text' placeholder='Enter Reason Name' {...register('deposit', { required: 'Reason Name is required' })} />
+                                <Form.Control className='login_form_group'
+                                    onInput={handleInput}
+                                    type='text' placeholder='Enter Deposit' {...register('deposit', {
+                                        required: 'Deposit is required', pattern: {
+                                            value: /^[0-9]+$/,
+                                            message: 'Only numbers are allowed'
+                                        }
+                                    })} />
                                 {errors.deposit && <Form.Text className="text-danger">{errors.deposit.message}</Form.Text>}
                             </Form.Group>
                         </Col>
@@ -332,7 +364,7 @@ const ReceiptsPage = () => {
                                     dropdownPosition='top'
                                     values={reason}
                                     onChange={(value) => setReason(value)}
-                                    placeholder="Select a Bank"
+                                    placeholder="Select a Remarks"
                                 />
                                 {errors.reasonName && <Form.Text className="text-danger">{errors.reasonName.message}</Form.Text>}
                             </Form.Group>
