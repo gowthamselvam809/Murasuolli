@@ -63,6 +63,16 @@ const updateCreditDebitCollection = async (req, res, next) => {
     }
 };
 
+const deleteCreditDebitCollection = async (req, res, next) => {
+    try {
+        let request = req.body;
+        let result = await collectionService.deleteCreditDebitCollection(request);
+        res.send(formatResponse(result));
+    } catch (error) {
+        next(error);
+    }
+};
+
 const fetchEntryNo = async (req, res, next) => {
     try {
         let request = req.body;
@@ -103,6 +113,45 @@ const insertCreditDebitCollection = async (req, res, next) => {
     }
 };
 
+const deleteCollection = async (req, res, next) => {
+    try {
+        let request = req.body;
+        let result = await collectionService.deleteCollection(request);
+        res.send(formatResponse(result));
+    } catch (error) {
+        next(error);
+    }
+};
+const fetchReports = async (req, res, next) => {
+    try {
+        let request = req.body;
+        let result = await collectionService.fetchReports(request);
+        res.send(formatResponse(result));
+    } catch (error) {
+        next(error);
+    }
+};
+
+const getChallanCounterNo = async (req, res, next) => {
+    try {
+        let request = req.body;
+        let result = await collectionService.getChallanCounterNo(request);
+        res.send(formatResponse(result));
+    } catch (error) {
+        next(error);
+    }
+};
+
+const fetchReportsForPrint = async (req, res, next) => {
+    try {
+        let request = req.body;
+        let result = await collectionService.fetchReportsForPrint(request);
+        res.send(formatResponse(result));
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     fetchAllCollection,
     fetchReceiptNo,
@@ -113,5 +162,10 @@ module.exports = {
     processSupply,
     viewSupply,
     updateCreditDebitCollection,
-    insertCreditDebitCollection
+    deleteCreditDebitCollection,
+    insertCreditDebitCollection,
+    deleteCollection,
+    fetchReports,
+    getChallanCounterNo,
+    fetchReportsForPrint
 }

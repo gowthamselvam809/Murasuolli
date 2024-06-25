@@ -220,7 +220,7 @@ const CopyConfirm = () => {
                                     Save
                                 </Button>
 
-                                <Button variant='secondary' disabled={isLoading} type='submit' className='login_form_button '>
+                                <Button variant='secondary' disabled={isLoading} type='button' onClick={handleCancel} className='login_form_button '>
                                     Cancel
                                 </Button>
                             </Col>

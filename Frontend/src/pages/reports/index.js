@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import DataTable from '../../components/common/dataTable'
 import { useForm } from 'react-hook-form';
 import { Add, Close } from '@mui/icons-material';
 import Select from 'react-dropdown-select';
-import { deleteCollection, deleteCreditDebitCollection, fetchAgentForDropdown, fetchAllCollection, fetchBankForDropdown, fetchEntryNo, fetchReasonForDropdown, fetchReceiptNo, fetchVoucherNo, insertCollection, insertCreditDebitCollection, updateCollection, updateCreditDebitCollection } from '../../api/apiRegister';
+import { deleteCollection, fetchAgentForDropdown, fetchAllCollection, fetchBankForDropdown, fetchReasonForDropdown, fetchReceiptNo, fetchReports, fetchVoucherNo, insertCollection, updateCollection } from '../../api/apiRegister';
 import { isEmptyArray } from 'formik';
+import { GetDateYYYY_MM_DD } from '../../utils';
 import { dateFormatWithYYYYMMDD } from '../../utils/utils';
 import Swal from 'sweetalert2';
+import PrintPageComponent from '../../components/print/reportPrintPage';
+import ReactToPrint from 'react-to-print';
+import PrintableComponent from '../../components/print/reportPrintPage';
 
-const CreditPage = () => {
+const ReportPage = () => {
     const { register, handleSubmit, reset, formState: { errors }, setValue } = useForm();
     const [isAdd, setIsAdd] = useState(false);
     const [received, setReceived] = useState('');
@@ -22,17 +26,19 @@ const CreditPage = () => {
     const [reason, setReason] = useState([]);
     const [agent, setAgent] = useState([]);
     const [bank, setBank] = useState([]);
+    const [currentDate, setCurrentDate] = useState('');
+
+    const componentRef = useRef();
+
     // const [challan, setChallan] = useState('');
     // const [receiptNo, setReceiptNo] = useState('');
     const [selectedOption, setSelectedOption] = useState(false);
-    const [currentDate, setCurrentDate] = useState('');
-
 
     const fetchAgent = async () => {
         const response = await fetchAgentForDropdown();
         setAllAgent(response.Items[0]);
 
-        const res = await fetchEntryNo({ tranType: 'CN' });
+        const res = await fetchVoucherNo();
         console.log(res);
         setValue('voucherNo', res.Items[0][0].voucherNo + 1 ?? 1)
         // setChallan(res.Items[0][0].voucherNo + 1 ?? 1);
@@ -47,23 +53,26 @@ const CreditPage = () => {
     }
 
     const fetchCollection = async () => {
-        const response = await fetchAllCollection({ tranType: 'CN' });
-        setAllCollection(response?.Items ?? []);
+        const response = await fetchReports();
+        console.log("reports", response)
+        setAllCollection(response?.Items);
     }
-    useEffect(() => { fetchCollection() }, [isEdit]);
+    useEffect(() => { fetchCollection() }, [isEdit, isAdd]);
 
     useEffect(() => {
+        if (isAdd && !isEdit) {
+            setValue('voucherNo', allCollection.length)
+        }
+
+    }, [isAdd])
+
+    useEffect(() => {
+        fetchCollection()
         fetchAgent();
         fetchBank();
 
     }, [])
 
-    useEffect(() => {
-        if (isAdd && !isEdit) {
-            const today = new Date().toISOString().split('T')[0];
-            setCurrentDate(today);
-        }
-    }, [isAdd, isEdit]);
 
     useEffect(() => {
         if (isEdit) {
@@ -75,21 +84,35 @@ const CreditPage = () => {
                 setValue(key, isEdit[key])
             });
 
-            setAgent([allAgent.find(agent => agent.value === isEdit.partyCode.split(" ")[0])]);
+            setAgent([allAgent.find(agent => agent.value === isEdit.partyCode)]);
             console.log('allAgent', [allAgent.find(agent => agent.value === isEdit.partyCode)])
 
+            setReceived(isEdit.contraCode);
+            if (isEdit?.contraCode !== 'CASH') {
+                setBank([allBank.find(bank => bank.value === isEdit.bankDet)])
+            }
+            console.log('allReason.filter(reason => reason.value === isEdit.reason)', allReason.filter(reason => reason.value === isEdit.reason), isEdit.reason, isEdit)
             setReason(allReason.filter(reason => reason.value === isEdit.reason));
+            // setReason([{ value: '07', label: 'heloo' }]);
+
         }
     }, [isEdit, setValue])
+
+    useEffect(() => {
+        if (isAdd && !isEdit) {
+            const today = new Date().toISOString().split('T')[0];
+            setCurrentDate(today);
+        }
+    }, [isAdd, isEdit]);
 
     const handleAgent = async (value) => {
         setAgent(value);
         if (!isEdit) {
-            const response = await fetchEntryNo({ tranType: 'CN' });
+            const response = await fetchReceiptNo({ partyCode: value[0].value });
             console.log(response.Items);
             if (response.Items) {
-                console.log("first agent", response.Items[0])
-                setValue('docNo', allCollection.length + 1);
+                console.log("first agent", response.Items[0][0].receiptNo)
+                setValue('docNo', response.Items[0][0].receiptNo + 1 ?? 1);
                 // setReceiptNo(response.Items[0][0].receiptNo + 1 ?? 1);
             }
         }
@@ -100,7 +123,9 @@ const CreditPage = () => {
         setIsAdd(false);
         setIsEdit(false);
         setAgent([]);
+        setBank([]);
         setReason([]);
+        setReceived('')
         reset();
     }
 
@@ -113,31 +138,39 @@ const CreditPage = () => {
             setSelectedOption(true);
             return;
         }
+        if (!received) {
+            setSelectedOption(true);
+            return;
+        }
+        if (isEmptyArray(bank) && received == 'BANK') {
+            setSelectedOption(true);
+            return;
+        }
         setSelectedOption(false);
 
-        const response = isEdit ? await updateCreditDebitCollection({
+        const response = isEdit ? await updateCollection({
             ...request,
+            bankDet: received === 'BANK' ? bank[0].value : 'By Cash',
             reason: isEmptyArray(reason) ? '' : reason[0].value,
             partyCode: agent[0].value,
-            tranType: 'CN'
-
-        }) : await insertCreditDebitCollection({
+            contraCode: received.toUpperCase(),
+        }) : await insertCollection({
             ...request,
+            bankDet: received === 'BANK' ? bank[0].value : 'By Cash',
             reason: isEmptyArray(reason) ? '' : reason[0].value,
             partyCode: agent[0].value,
-            tranType: 'CN'
+            contraCode: received.toUpperCase(),
+            tranType: 'RC'
         })
 
         if (response) {
-            handleCancel();
+            setIsAdd(false);
+            reset();
+            setIsEdit(false);
         }
 
     }
 
-    const handleEdit = (isEdit) => {
-        setIsEdit(isEdit);
-        setIsAdd(true);
-    }
 
     const handleDelete = async (data) => {
         setIsEdit(data);
@@ -151,7 +184,7 @@ const CreditPage = () => {
             confirmButtonText: "Yes, delete it!"
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const response = await deleteCreditDebitCollection({ ...data, tranType: 'CN' });
+                const response = await deleteCollection(data);
                 if (response) {
                     Swal.fire({
                         title: "Deleted!",
@@ -164,31 +197,21 @@ const CreditPage = () => {
         });
     }
 
-    // const handleDelete = (data) => { 
+
+    const handleRadioChange = (event) => {
+        setReceived(event.target.value);
+    };
+
+    const handleEdit = (isEdit) => {
+        setIsEdit(isEdit);
+        setIsAdd(true);
+    }
+
+    // const handleDelete = (data) => {
     //     setIsView(true);
     //     setIsAdd(false);
     // }
 
-
-    const columns = [
-        // { field: 'id', headerName: 'S.No.', width: 100, renderCell: (params) => params.row.id },
-        { field: 'id', headerName: 'S.No.', width: 60 },
-        { field: 'date', headerName: 'Receipt Date', width: 120 },
-        { field: 'partyCode', headerName: 'Agent Code', width: 340 },
-        { field: 'docNo', headerName: 'Receipt No', width: 100 },
-        // { field: 'dues', headerName: 'Dues', width: 100 },
-        { field: 'amount', headerName: 'Amount', width: 100 },
-        {
-            headerName: 'Actions',
-            width: 150,
-            renderCell: (params) => (
-                <div>
-                    <Button variant="info" className="mx-2" size="sm" onClick={() => handleEdit(params.row)}>Edit</Button>{'  '}
-                    <Button variant="danger" size="sm" onClick={() => handleDelete(params.row)}>Delete</Button>
-                </div>
-            ),
-        },
-    ];
     const handleInput = (event) => {
         const { value } = event.target;
         if (/[^0-9]/.test(value)) {
@@ -196,19 +219,55 @@ const CreditPage = () => {
         }
     };
 
+
+    const columns = [
+        // { field: 'id', headerName: 'S.No.', width: 100, renderCell: (params) => params.row.id },
+        { field: 'id', headerName: 'S.No.', width: 60 },
+        // { field: 'date', headerName: 'Receipt Date', width: 120 },
+        { field: 'place', headerName: 'Place', width: 150 },
+        { field: 'partyCode', headerName: 'Agent Code', width: 140 },
+        { field: 'heada_name', headerName: 'Agent Name', width: 250 },
+        { field: 'copies', headerName: 'Copies', width: 100 },
+        // {
+        //     headerName: 'Actions',
+        //     width: 150,
+        //     renderCell: (params) => (
+        //         <div>
+        //             <Button variant="info" className="mx-2" size="sm" onClick={() => handleEdit(params.row)}>Edit</Button>{'  '}
+        //             <Button variant="danger" size="sm" onClick={() => handleDelete(params.row)}>Delete</Button>
+        //         </div>
+        //     ),
+        // },
+    ];
+
     return (
         <Container className="p-3">
+
             <Row className="mb-1 px-2">
                 <Col>
-                    <h3>Credit Entry</h3>
+                    <h3>Reports</h3>
                 </Col>
-                <Col align='right'>{
+                {/* <Col align='right'>{
                     !isAdd ? (<Button variant="primary" size="md" onClick={() => setIsAdd(!isAdd)}>
-                        Add Credit <Add style={{ marginLeft: '0.1em' }} />
+                        Add Receipts <Add style={{ marginLeft: '0.1em' }} />
                     </Button>) : (<Button variant="primary" size="md" onClick={() => handleCancel()}>
                         close<Close style={{ marginLeft: '0.1em' }} />
                     </Button>)
-                }</Col>
+                }</Col> */}
+
+                <Col classNamed='flex-end' align="right" xl={5} lg={5}>
+                    {/* <PrintPageComponent /> */}
+                    <div className='d-flex align-items-center gap-4'>
+                        <h6>Print the Reports from here</h6>
+                        <ReactToPrint
+                            trigger={() => <Button variant="primary" size="md">Print Reports</Button>}
+                            content={() => componentRef.current}
+                        />
+                        <div style={{ display: 'none' }}>
+                            <PrintableComponent ref={componentRef} />
+                        </div>
+                    </div>
+                </Col>
             </Row>
             {!isAdd ? <DataTable column={columns} row={allCollection} /> : (
                 <Form className='login_form p-2' onSubmit={handleSubmit(onSubmit)}>
@@ -231,26 +290,26 @@ const CreditPage = () => {
                         <Col lg={4} xl={4}>
                             <Form.Group controlId='docDate' >
                                 <Form.Label>Receipt Date</Form.Label>
-                                <Form.Control className='login_form_group'
+                                <Form.Control className='login_form_group' disabled={isEdit}
                                     defaultValue={currentDate}
-                                    disabled={isEdit} type='date' placeholder='Enter Reason Code' {...register('docDate', { required: 'Reason Code is required' })} />
+                                    type='date' placeholder='Enter Receipt Date' {...register('docDate', { required: 'Receipt Date is required' })} />
                                 {errors.docDate && <Form.Text className="text-danger">{errors.docDate.message}</Form.Text>}
                             </Form.Group>
                         </Col>
                         <Col lg={4} xl={4}>
                             <Form.Group controlId='docNo' >
-                                <Form.Label>CR No.</Form.Label>
+                                <Form.Label>Receipt No.</Form.Label>
                                 <Form.Control className='login_form_group' disabled={true} style={{ background: '#E6CDCD' }} type='text' placeholder='Enter Reason Name' {...register('docNo', { required: 'Reason Name is required' })} />
                                 {errors.docNo && <Form.Text className="text-danger">{errors.docNo.message}</Form.Text>}
                             </Form.Group>
                         </Col>
-                        {/* <Col lg={4} xl={4}>
+                        <Col lg={4} xl={4}>
                             <Form.Group controlId='voucherNo' >
                                 <Form.Label>Challan No.</Form.Label>
                                 <Form.Control className='login_form_group' disabled={true} style={{ background: '#E6CDCD' }} type='text' placeholder='Enter Reason Code' {...register('voucherNo', { required: 'Reason Code is required' })} />
                                 {errors.voucherNo && <Form.Text className="text-danger">{errors.voucherNo.message}</Form.Text>}
                             </Form.Group>
-                        </Col> */}
+                        </Col>
                     </Row>
                     <Row className='mt-3'>
                         <Col lg={6} xl={6}>
@@ -260,14 +319,14 @@ const CreditPage = () => {
                                     className='login_form_group'
                                     options={allAgent}
                                     onChange={(value) => handleAgent(value)}
-                                    values={agent || []}
+                                    values={agent}
                                     disabled={isEdit}
                                     placeholder="Select a Agent"
                                 />
                                 {!selectedOption && isEmptyArray(agent) && <Form.Text className="text-danger">Please select a partyCode</Form.Text>}
                             </Form.Group>
                         </Col>
-                        {/* {received === 'BANK' && (
+                        {received === 'BANK' && (
                             <Col lg={6} xl={6}>
                                 <Form.Group controlId='contraCode' >
                                     <Form.Label>Bank</Form.Label>
@@ -280,25 +339,69 @@ const CreditPage = () => {
                                     />
                                     {isEmptyArray(bank) && selectedOption && <Form.Text className="text-danger">Please select a status</Form.Text>}
                                 </Form.Group>
-                            </Col>)} */}
+                            </Col>)}
+                    </Row>
+                    <Row className='mt-4'>
+                        <Col lg={2} xl={2}>
+                            <Form.Label>Received :</Form.Label>
+                        </Col>
+                        <Col lg={4} xl={4}>
+                            <Form.Check
+                                inline
+                                type='radio'
+                                id='Cash'
+                                name='received'
+                                value='CASH'
+                                label='Cash'
+                                checked={received === 'CASH'}
+                                onChange={handleRadioChange}
+                                className='mr-4'
+                            />
+
+                            <Form.Check
+                                inline
+                                type='radio'
+                                id='Bank'
+                                name='received'
+                                value='BANK'
+                                label='Bank'
+                                checked={received === 'BANK'}
+                                onChange={handleRadioChange}
+                            />
+                        </Col>
+                        {!received && selectedOption && <Form.Text className="text-danger">Please select a received</Form.Text>}
+
+
                     </Row>
                     <Row className='mt-2'>
                         <Col lg={6} xl={6} >
-                            <Form.Group controlId='amount' >
-                                <Form.Label>Amount</Form.Label>
+                            <Form.Group controlId='dues' >
+                                <Form.Label>Dues</Form.Label>
                                 <Form.Control className='login_form_group'
                                     onInput={handleInput}
-                                    type='text' placeholder='Enter Reason Name' {...register('amount', { required: 'Reason Name is required' })} />
-                                {errors.amount && <Form.Text className="text-danger">{errors.amount.message}</Form.Text>}
+                                    type='text' placeholder='Enter Dues' {...register('dues', {
+                                        required: 'Dues is required', pattern: {
+                                            value: /^[0-9]+$/,
+                                            message: 'Only numbers are allowed'
+                                        }
+                                    })} />
+                                {errors.dues && <Form.Text className="text-danger">{errors.dues.message}</Form.Text>}
                             </Form.Group>
                         </Col>
-                        {/* <Col lg={6} xl={6} >
+                        <Col lg={6} xl={6} >
                             <Form.Group controlId='deposit' >
                                 <Form.Label>Deposit</Form.Label>
-                                <Form.Control className='login_form_group' type='text' placeholder='Enter Reason Name' {...register('deposit', { required: 'Reason Name is required' })} />
+                                <Form.Control className='login_form_group'
+                                    onInput={handleInput}
+                                    type='text' placeholder='Enter Deposit' {...register('deposit', {
+                                        required: 'Deposit is required', pattern: {
+                                            value: /^[0-9]+$/,
+                                            message: 'Only numbers are allowed'
+                                        }
+                                    })} />
                                 {errors.deposit && <Form.Text className="text-danger">{errors.deposit.message}</Form.Text>}
                             </Form.Group>
-                        </Col> */}
+                        </Col>
                     </Row>
                     <Row className='mt-3'>
                         <Col lg={6} xl={6}>
@@ -310,15 +413,9 @@ const CreditPage = () => {
                                     dropdownPosition='top'
                                     values={reason}
                                     onChange={(value) => setReason(value)}
-                                    placeholder="Select a Bank"
+                                    placeholder="Select a Remarks"
                                 />
                                 {errors.reasonName && <Form.Text className="text-danger">{errors.reasonName.message}</Form.Text>}
-                            </Form.Group>
-                        </Col>
-                        <Col lg={6} xl={6}>
-                            <Form.Group controlId='remark1' >
-                                <Form.Label>Reason</Form.Label>
-                                <Form.Control className='login_form_group' as="textarea" placeholder='Enter 1 Name' {...register('remark1', { required: 'Reason is required' })} />
                             </Form.Group>
                         </Col>
                     </Row>
@@ -340,4 +437,4 @@ const CreditPage = () => {
     )
 }
 
-export default CreditPage
+export default ReportPage

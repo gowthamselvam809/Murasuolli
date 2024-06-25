@@ -99,7 +99,7 @@ const deleteAgent = async (requestData) => (await sequelize(requestData.dbName).
   }
 }))
 
-const fetchAgentForDropdown = async (requestData) => (await sequelize(requestData.dbName).query(`SELECT heada_code as value, heada_name as label from headacc`))
+const fetchAgentForDropdown = async (requestData) => (await sequelize(requestData.dbName).query(`SELECT heada_code as value, CONCAT(heada_code,'   ',heada_name, '   ', place) as label from headacc`))
 
 const fetchBankForDropdown = async (requestData) => (await sequelize(requestData.dbName).query(`SELECT heada_code as value, heada_name as label from headacc where headType = 'B'`))
 

@@ -20,6 +20,7 @@ import DebitPage from "../pages/receipts/debit";
 import CreditPage from "../pages/receipts/credit";
 import SupplyProcess from "../pages/supply/process";
 import SupplyView from "../pages/supply/viewSupply";
+import ReportPage from "../pages/reports";
 
 export const routerData = [
   {
@@ -171,6 +172,12 @@ export const routerData = [
     exact: false,
     layOut: true,
     element: <CreditPage />
+  },
+  {
+    path: '/reports',
+    exact: false,
+    layOut: true,
+    element: <ReportPage />
   },
 
 ]

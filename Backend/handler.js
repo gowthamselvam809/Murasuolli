@@ -83,10 +83,15 @@ app.post("/fetchVoucherNo", authenticator, collectionController.fetchVoucherNo);
 app.post("/insertCollection", authenticator, collectionController.insertCollection);
 app.post("/updateCollection", authenticator, collectionController.updateCollection);
 app.post("/updateCreditDebitCollection", authenticator, collectionController.updateCreditDebitCollection);
+app.post("/deleteCreditDebitCollection", authenticator, collectionController.deleteCreditDebitCollection);
 app.post("/insertCreditDebitCollection", authenticator, collectionController.insertCreditDebitCollection);
+app.post("/deleteCollection", authenticator, collectionController.deleteCollection);
 app.post("/fetchEntryNo", authenticator, collectionController.fetchEntryNo);
 app.post("/processSupply", authenticator, collectionController.processSupply);
 app.post("/viewSupply", authenticator, collectionController.viewSupply);
+app.post("/fetchReports", authenticator, collectionController.fetchReports);
+app.post("/getChallanCounterNo", authenticator, collectionController.getChallanCounterNo);
+app.post("/fetchReportsForPrint", authenticator, collectionController.fetchReportsForPrint);
 
 app.use(timeout('180s'));
 

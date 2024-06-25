@@ -1,7 +1,8 @@
 const { where } = require('sequelize');
 const dynamicSequelize = require('../../dynamicSequelize')
 const { getCurrentTimestamp, subtractDays, formatErrorResponse, ensureGetCopiesFunctionExists } = require('../helper/util')
-const { issuesModal } = require('../models')
+const { issuesModal } = require('../models');
+const { updateCopyConfirmByIssues } = require('./copyConfirmRepository');
 
 const fetchAllIssuesBasedOnDates = async (requestData) => {
   const transactionSequelize = await dynamicSequelize(requestData.dbName);
@@ -109,7 +110,7 @@ const insertIssues = async (requestData) => {
       ,'1' [OPERCODE]
       ,:date3 as [UPDATED]
       ,null
-  FROM (select * from ${requestData.dbName}.dbo.COPYCONFIRM as s where  s.PARTYCODE not in
+  FROM (select * from ${requestData.dbName}.dbo.COPYCONFIRM as s where s.magid=1 and s.PARTYCODE not in
   (select partycode from ${requestData.dbName}.dbo.CEASED))  as a inner join ${requestData.dbName}.dbo.MAGAZINE as b on a.magid=b.Magid
   `, {
     replacements: {
@@ -119,6 +120,7 @@ const insertIssues = async (requestData) => {
       date3: requestData.issDate,
     }
   })
+
 };
 
 const isAlreadyInserted = async (requestData) => {
@@ -146,6 +148,7 @@ const fetchIssuesBasedOnDate = async (requestData) => {
 const updateIssueCopy = async (requestData) => {
   console.log(requestData);
   const transactionSequelize = dynamicSequelize(requestData.financial);
+  await updateCopyConfirmByIssues(requestData)
   return await transactionSequelize.query(`
   update issues set copies = :copies where partyCode = :partyCode AND issDate = :issDate`,
     {

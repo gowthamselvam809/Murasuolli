@@ -52,8 +52,10 @@ const apiRoutes = {
   fetchMaxIssDate: "/fetchMaxIssDate",
   fetchEditIssuesByDate: "/fetchEditIssuesByDate",
   updateIssueCopy: "/updateIssueCopy",
+  deleteCreditDebitCollection: "/deleteCreditDebitCollection",
   fetchAllCompanies: "/fetchAllCompanies",
   fetchAllFinancialYear: "/fetchAllFinancialYear",
+  deleteCollection: "/deleteCollection",
   fetchAllOperator: "/fetchAllOperator",
   fetchAgentForDropdown: "/fetchAgentForDropdown",
   fetchAllCollection: "/fetchAllCollection",
@@ -69,6 +71,9 @@ const apiRoutes = {
   viewSupply: "/viewSupply",
   updateCreditDebitCollection: "/updateCreditDebitCollection",
   insertCreditDebitCollection: "/insertCreditDebitCollection",
+  fetchReports: "/fetchReports",
+  getChallanCounterNo: "/getChallanCounterNo",
+  fetchReportsForPrint: "/fetchReportsForPrint",
 }
 
 export { Url, apiRoutes };

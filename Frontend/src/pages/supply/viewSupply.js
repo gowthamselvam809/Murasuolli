@@ -9,6 +9,7 @@ import { getLastDayOfMonth } from '../../utils/utils';
 import Loader from '../../components/common/Loader';
 import DataTable from '../../components/common/dataTable';
 import { viewSupply } from '../../api/apiRegister';
+import ProcessDataTable from './ProcessDataTable';
 
 
 const SupplyView = () => {
@@ -45,7 +46,14 @@ const SupplyView = () => {
                 return {
                     field: key,
                     headerName: 'S.No',
-                    width: 80,
+                    width: 60,
+                }
+            }
+            if (key === 'Agent') {
+                return {
+                    field: key,
+                    headerName: 'Agent',
+                    width: 350,
                 }
             }
             return {
@@ -105,7 +113,7 @@ const SupplyView = () => {
                             </Button>
                             </Col>
                         </Row>
-                        <DataTable column={columns} row={allIssues} />
+                        <ProcessDataTable column={columns} row={allIssues} />
                     </div>
                 )
 

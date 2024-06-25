@@ -52,6 +52,25 @@ const updateCopyConfirm = async (requestData) => {
   });
 }
 
+
+const updateCopyConfirmByIssues = async (requestData) => {
+  const query = `
+            UPDATE copyconfirm
+            SET
+                copies = :copies,
+                updated = :updated
+            WHERE partyCode = :partyCode;
+        `;
+  return await sequelize.query(query, {
+    replacements: {
+      partyCode: requestData.partyCode,
+      copies: requestData.copies,
+      updated: getCurrentTimestamp(),
+    },
+    type: sequelize.QueryTypes.UPDATE
+  });
+}
+
 const createCopyConfirm = async (requestData) => (await sequelize.query(`
             INSERT INTO copyconfirm (partyCode, magId, commId, copies, updated)
             VALUES (:partyCode,:magId, :commId, :copies, :updated);`, {
@@ -69,5 +88,6 @@ module.exports = {
   fetchAllCopyConfirm,
   updateCopyConfirm,
   createCopyConfirm,
-  fetchCopyConfirmById
+  fetchCopyConfirmById,
+  updateCopyConfirmByIssues
 }

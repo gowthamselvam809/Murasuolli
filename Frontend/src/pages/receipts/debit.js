@@ -4,9 +4,10 @@ import DataTable from '../../components/common/dataTable'
 import { useForm } from 'react-hook-form';
 import { Add, Close } from '@mui/icons-material';
 import Select from 'react-dropdown-select';
-import { fetchAgentForDropdown, fetchAllCollection, fetchBankForDropdown, fetchEntryNo, fetchReasonForDropdown, fetchReceiptNo, fetchVoucherNo, insertCollection, insertCreditDebitCollection, updateCollection, updateCreditDebitCollection } from '../../api/apiRegister';
+import { deleteCreditDebitCollection, fetchAgentForDropdown, fetchAllCollection, fetchBankForDropdown, fetchEntryNo, fetchReasonForDropdown, fetchReceiptNo, fetchVoucherNo, insertCollection, insertCreditDebitCollection, updateCollection, updateCreditDebitCollection } from '../../api/apiRegister';
 import { isEmptyArray } from 'formik';
 import { dateFormatWithYYYYMMDD } from '../../utils/utils';
+import Swal from 'sweetalert2';
 
 const DebitPage = () => {
     const { register, handleSubmit, reset, formState: { errors }, setValue } = useForm();
@@ -87,7 +88,7 @@ const DebitPage = () => {
                 setValue(key, isEdit[key])
             });
 
-            setAgent([allAgent.find(agent => agent.value === isEdit.partyCode)]);
+            setAgent([allAgent.find(agent => agent.value === isEdit.partyCode.split(" ")[0])]);
             // console.log('allAgent', [allAgent.find(agent => agent.value === isEdit.partyCode)])
 
             // setReceived(isEdit.contraCode);
@@ -114,6 +115,32 @@ const DebitPage = () => {
         }
 
     }
+
+    const handleDelete = async (data) => {
+        setIsEdit(data);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const response = await deleteCreditDebitCollection({ ...data, tranType: 'DN' });
+                if (response) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Agent has been deleted.",
+                        icon: "success"
+                    });
+                }
+            }
+            handleCancel();
+        });
+    }
+
 
     const handleCancel = () => {
         setIsAdd(false);
@@ -173,9 +200,9 @@ const DebitPage = () => {
 
     const columns = [
         // { field: 'id', headerName: 'S.No.', width: 100, renderCell: (params) => params.row.id },
-        { field: 'id', headerName: 'S.No.', width: 100 },
-        { field: 'date', headerName: 'Receipt Date', width: 200 },
-        { field: 'partyCode', headerName: 'Agent Code', width: 120 },
+        { field: 'id', headerName: 'S.No.', width: 60 },
+        { field: 'date', headerName: 'Receipt Date', width: 120 },
+        { field: 'partyCode', headerName: 'Agent Code', width: 340 },
         { field: 'docNo', headerName: 'Receipt No', width: 100 },
         // { field: 'dues', headerName: 'Dues', width: 100 },
         { field: 'amount', headerName: 'Amount', width: 100 },
@@ -185,7 +212,7 @@ const DebitPage = () => {
             renderCell: (params) => (
                 <div>
                     <Button variant="info" className="mx-2" size="sm" onClick={() => handleEdit(params.row)}>Edit</Button>{'  '}
-                    {/* <Button variant="danger" size="sm" onClick={() => handleDelete(params.row)}>View</Button> */}
+                    <Button variant="danger" size="sm" onClick={() => handleDelete(params.row)}>Delete</Button>
                 </div>
             ),
         },

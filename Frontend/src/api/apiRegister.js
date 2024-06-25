@@ -57,6 +57,11 @@ export const processSupply = async (data) => (await apiClient.postAPICall(apiRou
 export const viewSupply = async (data) => (await apiClient.postAPICall(apiRoutes.viewSupply, data))?.data;
 export const insertCreditDebitCollection = async (data) => (await apiClient.postAPICall(apiRoutes.insertCreditDebitCollection, data))?.data;
 export const updateCreditDebitCollection = async (data) => (await apiClient.postAPICall(apiRoutes.updateCreditDebitCollection, data))?.data;
+export const deleteCollection = async (data) => (await apiClient.postAPICall(apiRoutes.deleteCollection, data))?.data;
+export const deleteCreditDebitCollection = async (data) => (await apiClient.postAPICall(apiRoutes.deleteCreditDebitCollection, data))?.data;
+export const fetchReports = async (data) => (await apiClient.postAPICall(apiRoutes.fetchReports, data))?.data;
+export const getChallanCounterNo = async (data) => (await apiClient.postAPICall(apiRoutes.getChallanCounterNo, data))?.data;
+export const fetchReportsForPrint = async (data) => (await apiClient.postAPICall(apiRoutes.fetchReportsForPrint, data))?.data;
 
 export const getAllUsers = async (data) => (await apiClient.postAPICall(apiRoutes.getAllUsers, data))?.data;
 export const deleteUser = async (data) => (await apiClient.postAPICall(apiRoutes.deleteUser, data))?.data;

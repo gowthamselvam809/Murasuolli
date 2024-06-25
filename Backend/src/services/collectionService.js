@@ -6,6 +6,10 @@ const fetchAllCollection = async (request) => {
     return await collectionRepository.fetchAllCollection(request);
 }
 
+const getChallanCounterNo = async (request) => {
+    return await collectionRepository.getChallanCounterNo(request);
+}
+
 const fetchReceiptNo = async (request) => {
     return await collectionRepository.fetchReceiptNo(request);
 }
@@ -28,6 +32,22 @@ const updateCreditDebitCollection = async (request) => {
 
 const insertCreditDebitCollection = async (request) => {
     return await collectionRepository.insertCreditDebitCollection(request);
+}
+
+const fetchReports = async (request) => {
+    return await collectionRepository.fetchReports(request);
+}
+
+const deleteCreditDebitCollection = async (request) => {
+    return await collectionRepository.deleteCreditDebitCollection(request);
+}
+
+const deleteCollection = async (request) => {
+    return await collectionRepository.deleteCollection(request);
+}
+
+const fetchReportsForPrint = async (request) => {
+    return await collectionRepository.fetchReportsForPrint(request);
 }
 
 const fetchEntryNo = async (request) => {
@@ -54,6 +74,8 @@ const processSupply = async (request) => {
 
 
 
+
+
 module.exports = {
     fetchAllCollection,
     fetchReceiptNo,
@@ -62,7 +84,12 @@ module.exports = {
     updateCollection,
     updateCreditDebitCollection,
     insertCreditDebitCollection,
+    deleteCreditDebitCollection,
     fetchEntryNo,
     viewSupply,
-    processSupply
+    processSupply,
+    deleteCollection,
+    fetchReports,
+    getChallanCounterNo,
+    fetchReportsForPrint
 }
